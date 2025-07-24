@@ -1,4 +1,21 @@
 <style>
+.register-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #00c3ff;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.register-btn:hover {
+  background-color: #009fc9;
+}
+</style><style>
 .product-card {
   position: relative;
   width: 250px;
