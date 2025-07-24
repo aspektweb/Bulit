@@ -1,4 +1,4 @@
-/* Umumiy uslublar */
+/* 🌐 Umumiy sozlamalar */
 * {
   margin: 0;
   padding: 0;
@@ -7,27 +7,29 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #f9f9f9, #fff);
-  color: #333;
+  background-color: #f5f7fa;
+  color: #2c3e50;
   line-height: 1.6;
 }
 
-/* Navbar */
+/* ✅ Navbar */
 .navbar {
-  background-color: #1a1a1a;
-  padding: 1rem 2rem;
+  background-color: #0d1117;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  padding: 1rem 2rem;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.navbar .logo {
-  font-size: 1.5rem;
+.logo {
+  font-size: 1.8rem;
   font-weight: bold;
+  color: #f39c12;
 }
 
 .nav-links {
@@ -37,10 +39,10 @@ body {
 }
 
 .nav-links a {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
 }
 
 .nav-links a:hover {
@@ -49,26 +51,26 @@ body {
 
 .cta {
   background-color: #f39c12;
+  color: #ffffff;
   border: none;
   padding: 0.6rem 1.2rem;
-  color: white;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
 .cta:hover {
-  background-color: #e67e22;
+  background-color: #d35400;
 }
 
-/* Hero */
+/* 🎯 Hero qismi */
 .hero-section {
   height: 85vh;
-  background: url('img/banner.jpg') no-repeat center center/cover;
+  background: linear-gradient(to right, #1f2937, #2c3e50);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   text-align: center;
   padding: 2rem;
 }
@@ -85,28 +87,29 @@ body {
 
 .btn-primary {
   background-color: #3498db;
+  color: white;
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
-  color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: transform 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-  transform: scale(1.05);
   background-color: #2980b9;
 }
 
-/* Products Section */
+/* 🛒 Mahsulotlar qismi */
 .products-section {
   padding: 4rem 2rem;
+  background-color: #ecf0f1;
 }
 
 .section-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2rem;
+  color: #34495e;
 }
 
 .product-grid {
@@ -117,15 +120,15 @@ body {
 
 .product-card {
   background-color: white;
-  padding: 1rem;
   border-radius: 15px;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  padding: 1rem;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
 }
 
 .product-card img {
@@ -137,37 +140,39 @@ body {
 
 .product-card h3 {
   margin: 1rem 0 0.5rem;
-  font-size: 1.2rem;
+  color: #2c3e50;
 }
 
 .product-card p {
+  font-size: 1.1rem;
   font-weight: bold;
   color: #27ae60;
 }
 
 .buy-btn {
-  background-color: #27ae60;
+  background-color: #2ecc71;
   color: white;
   padding: 0.5rem 1rem;
-  border: none;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
 .buy-btn:hover {
   background-color: #1e8449;
 }
 
-/* Contact Form */
+/* ✉️ Aloqa bo‘limi */
 .contact-section {
-  background-color: #f1f1f1;
   padding: 4rem 2rem;
+  background-color: #f9f9f9;
 }
 
 .contact-form {
   max-width: 600px;
-  margin: 0 auto;
+  margin: auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -175,7 +180,7 @@ body {
 
 .contact-form input,
 .contact-form textarea {
-  padding: 0.75rem;
+  padding: 0.8rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
@@ -184,27 +189,27 @@ body {
 .contact-form button {
   background-color: #3498db;
   color: white;
-  border: none;
   padding: 0.75rem;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
 .contact-form button:hover {
   background-color: #2980b9;
 }
 
-/* Footer */
+/* 👣 Footer */
 .footer {
-  background-color: #1a1a1a;
+  background-color: #0d1117;
   color: white;
   text-align: center;
   padding: 1rem;
   font-size: 0.9rem;
 }
 
-/* Animatsiya */
+/* 💫 Suzuvchi animatsiya */
 .floating {
   animation: floatUpDown 3s ease-in-out infinite;
 }
@@ -218,7 +223,7 @@ body {
   }
 }
 
-/* Responsiv dizayn */
+/* 📱 Responsiv dizayn */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -235,141 +240,5 @@ body {
 
   .product-grid {
     grid-template-columns: 1fr;
-  }
-}/* style.css */
-
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(to right, #f8f8f8, #ffffff);
-  color: #333;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: #1a1a1a;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-links li a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-  color: #f39c12;
-}
-
-.cta {
-  background-color: #f39c12;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.cta:hover {
-  background-color: #e67e22;
-}
-
-.hero-section {
-  height: 80vh;
-  background: url('img/banner.jpg') no-repeat center center/cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-}
-
-.btn-primary {
-  background-color: #3498db;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  transition: transform 0.3s;
-}
-
-.btn-primary:hover {
-  transform: scale(1.1);
-  background-color: #2980b9;
-}
-
-.products-section {
-  padding: 4rem 2rem;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.product-card {
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.product-card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.product-card h3 {
-  margin: 1rem 0 0.5rem;
-}
-
-.product-card .buy-btn {
-  background-color: #27ae60;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.3s;
-}
-
-.product-card .buy-btn:hover {
-  background-color: #1e8449;
-}
-
-/* Animation */
-.floating {
-  animation: floatUpDown 3s ease-in-out infinite;
-}
-
-@keyframes floatUpDown {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
   }
 }
