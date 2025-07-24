@@ -1,4 +1,52 @@
-/* 🌐 Umumiy sozlamalar */
+<style>
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.product-card {
+  position: relative;
+  width: 250px;
+  height: 300px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-info {
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(3px);
+  transition: bottom 0.5s ease;
+  font-family: Arial, sans-serif;
+}
+
+.product-card:hover .product-info {
+  bottom: 0;
+}
+</style>/* 🌐 Umumiy sozlamalar */
 * {
   margin: 0;
   padding: 0;
