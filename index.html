@@ -1,15 +1,173 @@
-<!DOCTYPE html>
+/* Umumiy sozlamalar */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f2f2f2;
+  color: #333;
+}
+
+/* Header */
+header {
+  background-color: #1e90ff;
+  color: white;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Navigatsiya */
+nav {
+  background: #333;
+  display: flex;
+  justify-content: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 15px 20px;
+  display: inline-block;
+  transition: background 0.3s;
+}
+
+nav a:hover {
+  background: #555;
+}
+
+/* Kontent<!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <title>Mening Saytim</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karomov Ahrorbek - Internet Do‘kon</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Salom, bu mening birinchi saytim!</h1>
-    <p>Codepen dan GitHub'ga o'tganimdan xursandman.</p>
-    <button id="salomBtn">Menga salom ayt!</button>
+  <header class="navbar">
+    <div class="logo">AhrorShop</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#home">Asosiy</a></li>
+        <li><a href="#products">Mahsulotlar</a></li>
+        <li><a href="#contact">Aloqa</a></li>
+      </ul>
+    </nav>
+    <button class="cta">Roʻyxatdan oʻtish</button>
+  </header>
 
-    <script src="script.js"></script>
-</body>
-</html>
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <h1>Xush kelibsiz AhrorShop do‘koniga</h1>
+      <p>Sifatli mahsulotlar, tez yetkazib berish!</p>
+      <a href="#products" class="btn-primary">Mahsulotlarni ko‘rish</a>
+    </div>
+    <div class="hero-animation floating"></div>
+  </section>
+
+  <section id="products" class="products-section">
+    <h2 class="section-title">Mashhur Mahsulotlar</h2>
+    <div class="product-grid">
+      <!-- 20+ mahsulotni list qilib qo‘yamiz -->
+      <!-- Misol uchun bir nechtasi quyida: -->
+      <div class="product-card floating">
+        <img src="img/product1.jpg" alt="Mahsulot 1">
+        <h3>Sport krossovka</h3>
+        <p>$49.99</p>
+        <button class="buy-btn">Sotib olish</button>
+      </div>
+
+      <div class="product-card floating">
+        <img src="img/product2.jpg" alt="Mahsulot 2">
+        <h3>Smart soat</h3>
+        <p>$89.99</p>
+        <button class="buy-btn">Sotib olish</button>
+      </div>
+
+      <!-- Bu yerga 100+ mahsulot kartochkalarini yozamiz --><!-- Davomi: mahsulot kartalari -->
+      <div class="product-card floating">
+        <img src="img/product3.jpg" alt="Mahsulot 3">
+        <h3>Quloqchin</h3>
+        <p>$24.99</p>
+        <button class="buy-btn">Sotib olish</button>
+      </div>
+
+      <div class="product-card floating">
+        <img src="img/product4.jpg" alt="Mahsulot 4">
+        <h3>Telefon g'ilofi</h3>
+        <p>$12.00</p>
+        <button class="buy-btn">Sotib olish</button>
+      </div>
+
+      <div class="product-card floating">
+        <img src="img/product5.jpg" alt="Mahsulot 5">
+        <h3>Naushnik Bluetooth</h3>
+        <p>$39.99</p>
+        <button class="buy-btn">Sotib olish</button>
+      </div>
+
+      <!-- Mahsulotlar soni ko‘paytiriladi -->/* style.css */
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #f8f8f8, #ffffff);
+  color: #333;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #1a1a1a;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #f39c12;
+}
+
+.cta {
+  background-color: #f39c12;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cta:hover {
+  background-color: #e67e22;
+}
+
+.hero-section {
+  height: 80vh;
+  background: url('img/banner.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  color
