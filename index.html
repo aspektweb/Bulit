@@ -3,326 +3,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>treyler_box | Neon Movie Trailers</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Trailer Box | Film Afishalari</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&display=swap');
-        
-        .neon-text {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de;
-            animation: flicker 1.5s infinite alternate;
+        /* Asosiy stil */
+        :root {
+            --primary: #e50914;
+            --dark: #141414;
+            --light: #f4f4f4;
+            --gray: #999;
+            --dark-gray: #222;
         }
-        
-        .neon-border {
-            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #08f, 0 0 30px #08f;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-        
-        .neon-card:hover {
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero section */
+        #hero {
+            height: 70vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://source.unsplash.com/random/1920x1080/?movie') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            width: 100%;
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--gray);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: var(--primary);
+            margin: 15px auto;
+        }
+
+        .dark-bg {
+            background-color: var(--dark-gray);
+        }
+
+        /* Movies grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .movie-card {
+            background-color: #222;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .movie-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Instagram grid */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .instagram-post {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .instagram-post img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .instagram-post:hover img {
             transform: scale(1.05);
-            box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #08f, 0 0 40px #08f;
         }
-        
-        @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de;
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #b2070f;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            background-color: var(--dark);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+            animation: modalopen 0.5s;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: var(--light);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            display: flex;
+            gap: 30px;
+        }
+
+        .modal-body img {
+            width: 300px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-info h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 15px;
+        }
+
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-body {
+                flex-direction: column;
             }
-            20%, 24%, 55% {
-                text-shadow: none;
+            
+            .modal-body img {
+                width: 100%;
+                height: auto;
+            }
+            
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
         }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        }
-        
-        .trailer-player {
-            transition: all 0.3s ease;
-        }
-        
-        .trailer-player:hover {
-            transform: scale(1.02);
+
+        @media (max-width: 576px) {
+            header .container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+            }
+            
+            .movies-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-white font-sans">
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-black bg-opacity-80 backdrop-blur-md border-b border-blue-500 border-opacity-30">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-film text-2xl text-pink-500"></i>
-                <h1 class="text-2xl font-bold neon-text font-['Bungee']">treyler_box</h1>
-            </div>
-            
-            <div class="hidden md:flex space-x-6">
-                <a href="#" class="hover:text-pink-400 transition">Home</a>
-                <a href="#" class="hover:text-blue-400 transition">Trailers</a>
-                <a href="#" class="hover:text-purple-400 transition">Genres</a>
-                <a href="#" class="hover:text-green-400 transition">Upcoming</a>
-            </div>
-            
-            <div class="flex items-center space-x-4">
-                <button class="p-2 rounded-full bg-blue-900 bg-opacity-50 hover:bg-opacity-70 transition">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button class="p-2 rounded-full bg-pink-900 bg-opacity-50 hover:bg-opacity-70 transition">
-                    <i class="fas fa-user"></i>
-                </button>
-                <button class="md:hidden p-2 rounded-full bg-purple-900 bg-opacity-50 hover:bg-opacity-70 transition">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">TRAILER BOX</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Bosh Sahifa</a></li>
+                    <li><a href="#movies">Filmlar</a></li>
+                    <li><a href="#top">Top 10</a></li>
+                    <li><a href="#instagram">Instagram</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <section class="mb-12 relative overflow-hidden rounded-xl neon-border p-1">
-            <div class="bg-black bg-opacity-70 p-8 rounded-xl">
-                <div class="max-w-2xl">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4 neon-text font-['Press_Start_2P']">LATEST BLOCKBUSTERS</h2>
-                    <p class="text-lg mb-6 text-gray-300">Discover the hottest movie trailers before they hit theaters. Updated daily with exclusive content.</p>
-                    <div class="flex space-x-4">
-                        <button class="px-6 py-3 bg-pink-600 hover:bg-pink-700 rounded-lg font-bold transition transform hover:scale-105">
-                            Watch Now
-                        </button>
-                        <button class="px-6 py-3 bg-transparent border-2 border-blue-400 hover:bg-blue-900 hover:bg-opacity-30 rounded-lg font-bold transition transform hover:scale-105">
-                            Subscribe
-                        </button>
-                    </div>
+    <section id="hero">
+        <div class="hero-content">
+            <h2>Eng So'nggi Film Afishalari</h2>
+            <p>Barcha yangi relizlar va ular haqida ma'lumotlar</p>
+        </div>
+    </section>
+
+    <section id="featured-movies" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Movies</h2>
+            <div class="movies-grid" id="movies-container">
+                <!-- Filmlar JavaScript orqali yuklanadi -->
+            </div>
+        </div>
+    </section>
+
+    <section id="instagram-feed" class="section dark-bg">
+        <div class="container">
+            <h2 class="section-title">Instagramda Biz <i class="fab fa-instagram"></i></h2>
+            <div class="instagram-grid" id="instagram-container">
+                <!-- Instagram postlari JavaScript orqali yuklanadi -->
+            </div>
+            <a href="https://www.instagram.com/treyler_box" class="btn" target="_blank">@treyler_box</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Trailer Box. Barcha huquqlar himoyalangan.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/treyler_box" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="Movie Poster">
+                <div class="movie-info">
+                    <h2 id="modal-title"></h2>
+                    <p class="meta"><span id="modal-year"></span> | <span id="modal-director"></span></p>
+                    <p class="meta">Aktyorlar: <span id="modal-actors"></span></p>
+                    <p id="modal-description"></p>
+                    <a href="#" id="modal-trailer" class="btn" target="_blank">Treylerni Ko'rish</a>
                 </div>
             </div>
-            <div class="absolute inset-0 -z-10">
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black"></div>
-                <img src="https://source.unsplash.com/random/1600x900/?movie,theater,neon" alt="Movie Theater" class="w-full h-full object-cover">
-            </div>
-        </section>
+        </div>
+    </div>
 
-        <!-- Featured Trailers -->
-        <section class="mb-16">
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="text-2xl md:text-3xl font-bold neon-text">Featured Trailers</h3>
-                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
-                    View All <i class="fas fa-chevron-right ml-2"></i>
-                </a>
-            </div>
+    <script>
+        // Film ma'lumotlari
+        const movies = [
+            {
+                id: 1,
+                title: "Indiana Jones 5",
+                year: "2023",
+                director: "James Mangold",
+                actors: "Harrison Ford, Phoebe Waller-Bridge, Mads Mikkelsen",
+                description: "Legendary archeologist and adventurer Indiana Jones races against time to retrieve a legendary artifact that can change the course of history.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BMmVkOTRiYmItZjE3NC00ZWRlLWI1YzktOWNyYzI0MmQ3OTY1XkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_FMjpg_UX1000_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=Z6X8RgT1fWQ"
+            },
+            {
+                id: 2,
+                title: "Fast X",
+                year: "2023",
+                director: "Louis Leterrier",
+                actors: "Vin Diesel, Jason Momoa, Michelle Rodriguez",
+                description: "Dom Toretto and his family are targeted by the vengeful son of drug kingpin Hernan Reyes.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BNzZmOTU1ZTEtYzVhNi00NzQxLWI5ZjAtNWNhNjEwY2E3YmZjXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=32RAq6JzY-w"
+            },
+            {
+                id: 3,
+                title: "The Meg 2",
+                year: "2023",
+                director: "Ben Wheatley",
+                actors: "Jason Statham, Jing Wu, Shuya Sophia Cai",
+                description: "A research team encounters multiple threats while exploring the depths of the ocean, including a malevolent mining operation.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BMTMxZTU5ZWUtOWIxYi00YmJkLTkwMTEtNzUwMTU0NWM4NjFmXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=dG91B3hHyY4"
+            },
+            {
+                id: 4,
+                title: "Mission: Impossible 7",
+                year: "2023",
+                director: "Christopher McQuarrie",
+                actors: "Tom Cruise, Hayley Atwell, Ving Rhames",
+                description: "Ethan Hunt and his IMF team must track down a terrifying new weapon that threatens all of humanity.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BYzFiZjc1YzctMDY3Zi00NGE5LTlmNWEtN2Q3OWFjYjY1NGM2XkEyXkFqcGdeQXVyMTUyMTUzNjQ0._V1_FMjpg_UX1000_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=avz06PDqDbM"
+            },
+            {
+                id: 5,
+                title: "John Wick 4",
+                year: "2023",
+                director: "Chad Stahelski",
+                actors: "Keanu Reeves, Donnie Yen, Bill Skarsgård",
+                description: "John Wick uncovers a path to defeating The High Table. But before he can earn his freedom, Wick must face off against a new enemy.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BMDExZGMyOTMtMDgyYi00NGIwLWJhMTEtOTdkZGFjNmZiMTEwXkEyXkFqcGdeQXVyMjM4NTM5NDY@._V1_FMjpg_UX1000_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=qEVUtrk8_B4"
+            },
+            {
+                id: 6,
+                title: "The Equalizer 3",
+                year: "2023",
+                director: "Antoine Fuqua",
+                actors: "Denzel Washington, Dakota Fanning, Eugenio Mastrandrea",
+                description: "Robert McCall finds himself at home in Southern Italy but he discovers his friends are under the control of local crime bosses.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BY2YzOTQ3MjAtYjU1My00YjA0LWIyOTctYWIwNmNmZGU2OGFhXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_FMjpg_UX1000_.jpg",
+                trailerUrl: "https://www.youtube.com/watch?v=19ikl8vy4zs"
+            }
+        ];
+
+        // Instagram postlari
+        const instagramPosts = [
+            {
+                id: 1,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster1",
+                link: "https://www.instagram.com/p/C1_abc123"
+            },
+            {
+                id: 2,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster2",
+                link: "https://www.instagram.com/p/C2_def456"
+            },
+            {
+                id: 3,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster3",
+                link: "https://www.instagram.com/p/C3_ghi789"
+            },
+            {
+                id: 4,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster4",
+                link: "https://www.instagram.com/p/C4_jkl012"
+            },
+            {
+                id: 5,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster5",
+                link: "https://www.instagram.com/p/C5_mno345"
+            },
+            {
+                id: 6,
+                imageUrl: "https://source.unsplash.com/random/600x600/?movie,poster6",
+                link: "https://www.instagram.com/p/C6_pqr678"
+            }
+        ];
+
+        // DOM elementlari
+        const moviesContainer = document.getElementById('movies-container');
+        const instagramContainer = document.getElementById('instagram-container');
+        const modal = document.getElementById('movie-modal');
+        const closeBtn = document.querySelector('.close');
+
+        // Sahifani yuklash
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMovies();
+            loadInstagramPosts();
+        });
+
+        // Filmlarni yuklash
+        function loadMovies() {
+            moviesContainer.innerHTML = '';
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Trailer Card 1 -->
-                <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden neon-card transition duration-300 hover:shadow-lg">
-                    <div class="relative">
-                        <img src="https://source.unsplash.com/random/600x400/?sci-fi,movie" alt="Movie Poster" class="w-full h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4">
-                            <span class="bg-red-500 text-xs font-bold px-2 py-1 rounded">NEW</span>
-                        </div>
-                        <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 rounded-full w-16 h-16 flex items-center justify-center hover:bg-opacity-90 transition">
-                            <i class="fas fa-play text-2xl text-pink-500"></i>
-                        </button>
+            movies.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card';
+                movieCard.innerHTML = `
+                    <img src="${movie.imageUrl}" alt="${movie.title}" class="movie-poster">
+                    <div class="movie-info">
+                        <h3>${movie.title}</h3>
+                        <p>${movie.year} • ${movie.director}</p>
                     </div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-xl mb-2">Cosmic Odyssey</h4>
-                        <div class="flex items-center text-sm text-gray-400 mb-3">
-                            <span>Sci-Fi</span>
-                            <span class="mx-2">•</span>
-                            <span>2h 18m</span>
-                            <span class="mx-2">•</span>
-                            <span><i class="fas fa-star text-yellow-400"></i> 4.8</span>
-                        </div>
-                        <p class="text-gray-300 text-sm mb-4">A team of astronauts embarks on a perilous journey through a newly discovered wormhole.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-heart mr-1"></i> 1.2K
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-comment mr-1"></i> 348
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="fas fa-share-alt mr-1"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                `;
                 
-                <!-- Trailer Card 2 -->
-                <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden neon-card transition duration-300 hover:shadow-lg">
-                    <div class="relative">
-                        <img src="https://source.unsplash.com/random/600x400/?action,movie" alt="Movie Poster" class="w-full h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 rounded-full w-16 h-16 flex items-center justify-center hover:bg-opacity-90 transition">
-                            <i class="fas fa-play text-2xl text-pink-500"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-xl mb-2">Midnight Racer</h4>
-                        <div class="flex items-center text-sm text-gray-400 mb-3">
-                            <span>Action</span>
-                            <span class="mx-2">•</span>
-                            <span>1h 52m</span>
-                            <span class="mx-2">•</span>
-                            <span><i class="fas fa-star text-yellow-400"></i> 4.5</span>
-                        </div>
-                        <p class="text-gray-300 text-sm mb-4">An underground street racer gets involved with a dangerous crime syndicate.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-heart mr-1"></i> 892
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-comment mr-1"></i> 215
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="fas fa-share-alt mr-1"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Trailer Card 3 -->
-                <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden neon-card transition duration-300 hover:shadow-lg">
-                    <div class="relative">
-                        <img src="https://source.unsplash.com/random/600x400/?horror,movie" alt="Movie Poster" class="w-full h-64 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4">
-                            <span class="bg-purple-500 text-xs font-bold px-2 py-1 rounded">TRENDING</span>
-                        </div>
-                        <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 rounded-full w-16 h-16 flex items-center justify-center hover:bg-opacity-90 transition">
-                            <i class="fas fa-play text-2xl text-pink-500"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-xl mb-2">The Haunting</h4>
-                        <div class="flex items-center text-sm text-gray-400 mb-3">
-                            <span>Horror</span>
-                            <span class="mx-2">•</span>
-                            <span>1h 45m</span>
-                            <span class="mx-2">•</span>
-                            <span><i class="fas fa-star text-yellow-400"></i> 4.9</span>
-                        </div>
-                        <p class="text-gray-300 text-sm mb-4">A family moves into a remote mansion, unaware of its dark supernatural history.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-heart mr-1"></i> 2.4K
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="far fa-comment mr-1"></i> 512
-                            </button>
-                            <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center">
-                                <i class="fas fa-share-alt mr-1"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                movieCard.addEventListener('click', () => openModal(movie));
+                moviesContainer.appendChild(movieCard);
+            });
+        }
 
-        <!-- Video Player Section -->
-        <section class="mb-16">
-            <div class="bg-black bg-opacity-70 rounded-xl overflow-hidden neon-border p-1">
-                <div class="relative">
-                    <img src="https://source.unsplash.com/random/1600x900/?cinema,neon" alt="Featured Trailer" class="w-full h-96 object-cover trailer-player">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                    <div class="absolute bottom-8 left-8 right-8">
-                        <h3 class="text-3xl font-bold mb-2">Cyberpunk 2077: Phantom Liberty</h3>
-                        <div class="flex items-center text-lg mb-4">
-                            <span class="mr-4">Action</span>
-                            <span class="mr-4">•</span>
-                            <span class="mr-4">2h 32m</span>
-                            <span><i class="fas fa-star text-yellow-400 mr-1"></i> 4.7</span>
-                        </div>
-                        <p class="text-gray-300 mb-6 max-w-2xl">In this expansion to the hit game, V gets pulled into a web of espionage and must navigate the dangerous world of Night City's elite.</p>
-                        <div class="flex space-x-4">
-                            <button class="px-8 py-3 bg-pink-600 hover:bg-pink-700 rounded-lg font-bold flex items-center transition transform hover:scale-105">
-                                <i class="fas fa-play mr-2"></i> Play Trailer
-                            </button>
-                            <button class="px-8 py-3 bg-transparent border-2 border-blue-400 hover:bg-blue-900 hover:bg-opacity-30 rounded-lg font-bold flex items-center transition transform hover:scale-105">
-                                <i class="fas fa-plus mr-2"></i> Watchlist
-                            </button>
-                            <button class="p-3 bg-gray-800 bg-opacity-70 hover:bg-opacity-90 rounded-full transition">
-                                <i class="fas fa-share-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 rounded-full w-20 h-20 flex items-center justify-center hover:bg-opacity-90 transition">
-                        <i class="fas fa-play text-4xl text-pink-500"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories -->
-        <section class="mb-16">
-            <h3 class="text-2xl md:text-3xl font-bold mb-8 neon-text">Browse Categories</h3>
+        // Instagram postlarini yuklash
+        function loadInstagramPosts() {
+            instagramContainer.innerHTML = '';
             
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-robot text-3xl text-blue-400 mb-3"></i>
-                    <h4 class="font-bold">Sci-Fi</h4>
-                </div>
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-running text-3xl text-red-400 mb-3"></i>
-                    <h4 class="font-bold">Action</h4>
-                </div>
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-ghost text-3xl text-purple-400 mb-3"></i>
-                    <h4 class="font-bold">Horror</h4>
-                </div>
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-heart text-3xl text-pink-400 mb-3"></i>
-                    <h4 class="font-bold">Romance</h4>
-                </div>
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-laugh-squint text-3xl text-yellow-400 mb-3"></i>
-                    <h4 class="font-bold">Comedy</h4>
-                </div>
-                <div class="bg-gray-900 bg-opacity-60 rounded-lg p-6 text-center hover:bg-opacity-80 transition cursor-pointer neon-card">
-                    <i class="fas fa-mask text-3xl text-green-400 mb-3"></i>
-                    <h4 class="font-bold">Superhero</h4>
-                </div>
-            </div>
-        </section>
-
-        <!-- Coming Soon -->
-        <section>
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="text-2xl md:text-3xl font-bold neon-text">Coming Soon</h3>
-                <a href="#" class="text-blue-400 hover:text-blue-300 flex items-center">
-                    View All <i class="fas fa-chevron-right ml-2"></i>
-                </a>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Coming Soon Card 1 -->
-                <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden neon-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://source.unsplash.com/random/600x400/?fantasy,movie" alt="Movie Poster" class="w-full h-48 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4">
-                            <span class="bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">COMING SOON</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-lg mb-2">Realm of Legends</h4>
-                        <div class="flex items-center text-sm text-gray-400 mb-3">
-                            <span>Fantasy</span>
-                            <span class="mx-2">•</span>
-                            <span>Jul 15, 2023</span>
-                        </div>
-                        <button class="w-full py-2 bg-transparent border border-blue-400 hover:bg-blue-900 hover:bg-opacity-30 rounded-lg text-sm font-bold transition">
-                            Remind Me
-                        </button>
-                    </div>
-                </div>
+            instagramPosts.forEach(post => {
+                const postElement = document.createElement('a');
+                postElement.className = 'instagram-post';
+                postElement.href = post.link;
+                postElement.target = '_blank';
+                postElement.innerHTML = `<img src="${post.imageUrl}" alt="Instagram post">`;
                 
-                <!-- Coming Soon Card 2 -->
-                <div class="bg-gray-900 bg-opacity-60 rounded-xl overflow-hidden neon-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://source.unsplash.com/random/600x400/?spy,movie" alt="Movie Poster" class="w-full h-48 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4">
-                            <span class="bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">COMING SOON</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-bold text-lg mb-2">Shadow Protocol</h4>
-                        <div class="flex items-center text-sm text
+                instagramContainer.appendChild(postElement);
+            });
+        }
+
+        // Modalni ochish
+        function openModal(movie) {
+            document.getElementById('modal-image').src = movie.imageUrl;
+            document.getElementById('modal-title').textContent = movie.title;
+            document.getElementById('modal-year').textContent = movie.year;
+            document.getElementById('modal-director').textContent = movie.director;
+            document.getElementById('modal-actors').textContent = movie.actors;
+            document.getElementById('modal-description').textContent = movie.description;
+            document.getElementById('modal-trailer').href = movie.trailerUrl;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Modalni yopish
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Tashqariga bosganda modalni yopish
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
