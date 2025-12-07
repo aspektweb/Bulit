@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MahallaShop — Portfolio style (mimic)</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">Mahalla<span>Shop</span></a>
+      <nav class="nav" id="nav">
+        <a href="#home">Bosh</a>
+        <a href="#projects">Loyihalar</a>
+        <a href="#services">Mahsulotlar</a>
+        <a href="#contact" class="accent">Bog'lanish</a>
+      </nav>
+      <button id="burger" class="burger" aria-label="menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-inner container">
+        <div class="hero-text">
+          <h1>Mahalla <span class="glow">Shop</span> — Meva, Non, Shirinlik</h1>
+          <p class="lead">Yaqin atrofdagi doʻkonlaringiz uchun zamonaviy onlayn vitrina. Tez, ishonchli va mazali.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#products">Mahsulotlar</a>
+            <a class="btn ghost" href="#projects">Loyihalar</a>
+          </div>
+          <ul class="meta-chips">
+            <li>24 soat yetkazib berish</li>
+            <li>Mahalliy yetishtirilgan</li>
+            <li>Oilaviy paketlar</li>
+          </ul>
+        </div>
+
+        <div class="hero-media">
+          <div class="media-stack">
+            <img src="https://images.unsplash.com/photo-1574226516831-e2923f27c7d2?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bananlar">
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Non" class="stacked">
+            <img src="https://images.unsplash.com/photo-1546069901-eacef0df6022?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Shirinlik" class="stacked top">
+          </div>
+        </div>
+      </div>
+      <svg class="hero-divider" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0 C300,120 900,0 1200,120 L1200 0 L0 0 Z" fill="url(#g)"></path><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#00ffd1"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs></svg>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features container">
+      <article class="feature glass">
+        <h3>Tez yetkazish</h3>
+        <p>Mahalliy yetkazib berish — 24 soat ichida.</p>
+      </article>
+      <article class="feature glass">
+        <h3>Tabiiy mahsulotlar</h3>
+        <p>Meva va nonlar mahalliy fermerlardan.</p>
+      </article>
+      <article class="feature glass">
+        <h3>Yaxshi narxlar</h3>
+        <p>Oilaviy paketlar va maxsus chegirmalar.</p>
+      </article>
+    </section>
+
+    <!-- PROJECTS / Featured Products -->
+    <section id="projects" class="projects container">
+      <div class="section-head">
+        <h2>Mahsulotlarimiz</h2>
+        <p class="muted">Banan, meva, non va shirinliklar — eng mashhurlari.</p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="proj glass">
+          <img src="https://images.unsplash.com/photo-1582515073490-399813b2c0f3?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="">
+          <div class="proj-body">
+            <h3>Banan pack — 1 kg</h3>
+            <p class="muted">Tabiiy va shirin</p>
+            <div class="proj-foot">
+              <span class="price">35 000 so'm</span>
+              <a class="btn small" href="#contact">Savatchaga</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj glass">
+          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="">
+          <div class="proj-body">
+            <h3>Yonib pishgan non</h3>
+            <p class="muted">Har kuni yangi</p>
+            <div class="proj-foot">
+              <span class="price">8 000 so'm</span>
+              <a class="btn small" href="#contact">Savatchaga</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj glass">
+          <img src="https://images.unsplash.com/photo-1546069901-eacef0df6022?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="">
+          <div class="proj-body">
+            <h3>Shirinlik torti</h3>
+            <p class="muted">Bayram uchun ideal</p>
+            <div class="proj-foot">
+              <span class="price">75 000 so'm</span>
+              <a class="btn small" href="#contact">Savatchaga</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA big -->
+    <section id="services" class="cta-hero">
+      <div class="container">
+        <div class="cta-card glass">
+          <h3>Maxsus taklif: Oilaviy paket</h3>
+          <p class="muted">Chegirma bilan — buyurtma berish uchun bog'laning.</p>
+          <a href="#contact" class="btn">Buyurtma berish</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact container">
+      <h2>Biz bilan bog'laning</h2>
+      <p class="muted">Savollar yoki buyurtma — xabar qoldiring.</p>
+      <form class="contact-form" action="#" method="post">
+        <div class="row">
+          <input type="text" name="name" placeholder="Ismingiz" required>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <textarea name="message" rows="5" placeholder="Xabaringiz..." required></textarea>
+        <div class="form-actions">
+          <button class="btn" type="submit">Yuborish</button>
+          <span class="muted">Yoki: +998 90 000 0000</span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© 2025 MahallaShop</div>
+      <div class="socials">
+        <a href="#" aria-label="instagram">IG</a>
+        <a href="#" aria-label="facebook">FB</a>
+        <a href="#" aria-label="telegram">TG</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // small JS: burger toggle + simple smooth scroll
+    document.getElementById('burger').addEventListener('click', () => {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('open');
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const id = a.getAttribute('href');
+        if(id === '#') return;
+        document.querySelector(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+        document.getElementById('nav').classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>
