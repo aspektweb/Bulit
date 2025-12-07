@@ -1,13 +1,17 @@
 /* ====================================
-   Global Uslublar
+   Ranglar va Shriftlar
    ==================================== */
 :root {
-    --primary-color: #007bff; /* Asosiy ko'k rang */
-    --secondary-color: #6c757d; /* Kulrang */
-    --accent-color: #28a745; /* Yashil (tugmalar uchun) */
-    --text-dark: #343a40; /* To'q rangli matn */
-    --background-light: #f8f9fa; /* Yengil fon */
-    --font-family: 'Arial', sans-serif;
+    /* Asosiy Ranglar */
+    --color-blue: #007bff;     /* Ko'k (Asosiy sarlavha, fon) */
+    --color-red: #dc3545;       /* Qizil (Aksiya, narx) */
+    --color-yellow: #ffc107;   /* Sariq (Diqqatni tortuvchi fon) */
+    --color-dark-blue: #0056b3; /* To'q ko'k (Footer) */
+    --color-text-dark: #212529; /* To'q matn */
+    --color-light: #f8f9fa;     /* Ochiq fon */
+    
+    /* Shriftlar */
+    --font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 * {
@@ -19,74 +23,85 @@
 body {
     font-family: var(--font-family);
     line-height: 1.6;
-    color: var(--text-dark);
-    background-color: #fff;
+    color: var(--color-text-dark);
+    background-color: var(--color-light);
+    font-size: 18px; /* Kattaroq asosiy shrift */
 }
+
+/* ====================================
+   Universal Elementlar
+   ==================================== */
 
 a {
     text-decoration: none;
-    color: var(--primary-color);
+    transition: all 0.3s ease;
 }
 
-a:hover {
-    color: var(--primary-color);
-    text-decoration: underline;
-}
-
-/* Tugma (Button) uslubi */
-.button {
+/* Katta sarlavhalar */
+h2 {
+    font-size: 2.5em; /* Kattaroq */
+    color: var(--color-blue);
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--color-yellow);
     display: inline-block;
-    background: var(--accent-color);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 15px;
-    transition: background 0.3s ease;
+    padding-bottom: 5px;
 }
 
-.button:hover {
-    background: #218838; /* To'qroq yashil */
-    text-decoration: none;
+h3 {
+    font-size: 2em; /* Kattaroq */
+    color: var(--color-red);
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 main {
-    padding: 20px;
-    max-width: 1200px;
+    padding: 30px 20px;
+    max-width: 1400px; /* Kattaroq kontent maydoni */
     margin: 0 auto;
 }
 
 section {
-    padding: 40px 0;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ddd;
+    padding: 50px 0;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-h2, h3 {
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    text-align: center;
+/* Fonga rang berish */
+.color-blue {
+    background-color: var(--color-blue);
+    color: #fff;
+    padding: 60px 20px;
+}
+
+.color-yellow-bg {
+    background-color: var(--color-yellow);
+    padding: 40px 20px;
 }
 
 /* ====================================
    Header va Navigatsiya
    ==================================== */
+
 header {
-    background: var(--primary-color);
-    color: #fff;
-    padding: 15px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--color-text-dark); /* To'q rangli fon */
+    padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
-nav h1 {
-    font-size: 1.8em;
+.logo-text {
+    font-size: 2.2em; /* Katta logo */
+    color: var(--color-yellow);
 }
 
 nav ul {
@@ -95,195 +110,105 @@ nav ul {
 }
 
 nav ul li {
-    margin-left: 25px;
+    margin-left: 35px;
 }
 
 nav ul li a {
     color: #fff;
     font-weight: bold;
-    padding: 5px 0;
-    transition: color 0.3s ease;
+    font-size: 1.1em;
+    padding: 8px 15px;
+    border-radius: 5px;
 }
 
-nav ul li a:hover {
-    color: var(--background-light);
-    text-decoration: none;
+nav ul li a:hover,
+nav ul li a.active {
+    background-color: var(--color-blue);
+    color: var(--color-yellow);
 }
 
 /* ====================================
-   Bosh Sahifa Qismlari
+   Tugmalar (Buttons)
    ==================================== */
-
-/* Banner */
-#banner {
-    background: var(--background-light);
-    text-align: center;
-    padding: 80px 20px;
+.button {
+    display: inline-block;
+    padding: 12px 25px;
     border-radius: 8px;
-    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+.button-red {
+    background: var(--color-red);
+    color: #fff;
+}
+
+.button-red:hover {
+    background: #c82333; /* To'qroq qizil */
+}
+
+.button-blue {
+    background: var(--color-blue);
+    color: #fff;
+}
+
+.button-blue:hover {
+    background: var(--color-dark-blue);
+}
+
+/* ====================================
+   Banner
+   ==================================== */
+#banner {
+    text-align: center;
+    padding: 100px 20px; /* Katta bo'sh joy */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #banner h2 {
-    font-size: 2.5em;
-    color: var(--text-dark);
-    margin-bottom: 10px;
+    color: #fff;
+    font-size: 3.5em; /* Juda katta sarlavha */
+    border-bottom: none;
+    margin-bottom: 20px;
 }
 
 #banner p {
-    font-size: 1.2em;
-    color: var(--secondary-color);
+    font-size: 1.4em;
+    margin-bottom: 30px;
 }
 
-/* Mahsulotlar Ro'yxati (Grid) */
+/* ====================================
+   Mahsulot Grid
+   ==================================== */
+
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
     margin-top: 30px;
+    padding: 20px;
 }
 
 .product-card {
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
+    border: 5px solid var(--color-blue);
+    border-radius: 10px;
+    padding: 25px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.product-card h4 {
+    color: var(--color-text-dark);
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
 .product-card img {
     width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.product-card h4 {
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-
-.product-card .price {
-    font-size: 1.2em;
-    color: var(--accent-color);
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.product-card .add-to-cart {
-    display: block;
-    background: var(--primary-color);
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 15px;
-}
-
-.product-card .add-to-cart:hover {
-    background: #0056b3;
-}
-
-/* ====================================
-   Aloqa Sahifasi (Kontakt)
-   ==================================== */
-
-#contact-form {
-    max-width: 600px;
-    margin: 0 auto 40px auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: var(--background-light);
-}
-
-#contact-form label {
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-#contact-form input[type="text"],
-#contact-form input[type="email"],
-#contact-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-}
-
-#contact-form textarea {
-    resize: vertical;
-}
-
-#location-info {
-    text-align: center;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-#location-info p {
-    margin-bottom: 10px;
-}
-
-#map {
-    width: 100%;
-    height: 300px;
-    background: #e9ecef; /* Xarita o'rnini ko'rsatuvchi kulrang fon */
-    border-radius: 8px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-}
-
-
-/* ====================================
-   Footer
-   ==================================== */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: var(--text-dark);
-    color: #fff;
-    margin-top: 30px;
-}
-
-
-/* ====================================
-   Mobil qurilmalar uchun moslashuv (Responsive)
-   ==================================== */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul {
-        margin-top: 10px;
-        padding: 0;
-        justify-content: center;
-    }
-
-    nav ul li {
-        margin: 0 10px;
-    }
-
-    #banner {
-        padding: 60px 10px;
-    }
-    
-    .product-grid {
-        grid-template-columns: 1fr; /* Kichik ekranlarda bitta ustun */
-    }
-}
+    height: auto;
+    max-height: 250px
