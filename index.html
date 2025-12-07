@@ -3,45 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mening Saytim</title>
+  <title>Mening Mukammal Saytim</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>Salom! Bu mening sayt</h1>
-    <nav>
-      <ul>
-        <li><a href="#home">Bosh sahifa</a></li>
-        <li><a href="#about">Men Haqimda</a></li>
-        <li><a href="#projects">Loyihalar</a></li>
-        <li><a href="#contact">Aloqa</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <h1>Mening Mukammal Saytim</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Bosh sahifa</a></li>
+          <li><a href="#about">Men Haqimda</a></li>
+          <li><a href="#projects">Loyihalar</a></li>
+          <li><a href="#contact">Aloqa</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <section id="home">
-    <h2>Xush kelibsiz</h2>
-    <p>Bu yerda saytning birinchi ko‘rinishi bo‘ladi — kirish, banner, salomlashuv va h.k.</p>
+  <section id="home" class="hero">
+    <div class="hero-text">
+      <h2>Salom! Xush kelibsiz</h2>
+      <p>Bu yerda siz mening eng so‘nggi ishlashlarim va loyihalarim bilan tanishishingiz mumkin.</p>
+      <a href="#projects" class="btn">Loyihalarni Ko‘rish</a>
+    </div>
   </section>
 
   <section id="about">
-    <h2>Men Haqimda</h2>
-    <p>Bu yerga o‘zingiz haqida qisqacha yozing — ismingiz, nima qilasiz, nima bilan shug‘ullanasiz va h.k.</p>
+    <div class="container">
+      <h2>Men Haqimda</h2>
+      <p>Men veb-ishlab chiqaruvchi va dizaynerman. Har doim yangi narsalarni o‘rganishni va mukammal saytlar yaratishni yoqtiraman.</p>
+    </div>
   </section>
 
   <section id="projects">
-    <h2>Loyihalarim</h2>
-    <p>Bu yerga loyihalaringiz, ishlagan ishlaringiz, tajribangizni yozing.</p>
+    <div class="container">
+      <h2>Loyihalarim</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>Loyiha 1</h3>
+          <p>Bu loyiha HTML, CSS va JavaScript bilan yaratilgan.</p>
+        </div>
+        <div class="project-card">
+          <h3>Loyiha 2</h3>
+          <p>Bu loyiha zamonaviy dizayn va responsive uslublar bilan ishlangan.</p>
+        </div>
+        <div class="project-card">
+          <h3>Loyiha 3</h3>
+          <p>Bu loyiha interaktiv elementlar va animatsiyalar bilan boyitilgan.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="contact">
-    <h2>Aloqa</h2>
-    <p>Email: <a href="mailto:ism@domain.uz">ism@domain.uz</a></p>
-    <p>Telefon: +998 9x xxx‑xxxx</p>
+    <div class="container">
+      <h2>Aloqa</h2>
+      <p>Email: <a href="mailto:ism@domain.uz">ism@domain.uz</a></p>
+      <p>Telefon: +998 9x xxx-xxxx</p>
+      <p>Telegram: @username</p>
+    </div>
   </section>
 
   <footer>
-    <p>&copy; 2025 Mening Saytim</p>
+    <p>&copy; 2025 Mening Mukammal Saytim</p>
   </footer>
 </body>
 </html>
