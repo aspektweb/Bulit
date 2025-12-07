@@ -1,4 +1,317 @@
 <!--
+YANGILANGAN LOYIHA: Mahalla Shop — Katta rasmli, ultra zamonaviy dizayn
+10 ta sahifa: index.html, products.html, product-detail.html, about.html, contact.html, gallery.html, cart.html, faq.html, blog.html, terms.html
+Barcha sahifalar bitta CSS: css/styles.css
+Til: O'zbekcha (soddalashtirilgan)
+Diqqat: bu variant katta suratlar, meva (banan), non, shirinliklarga urg'u beradi. Rasm manbalari Unsplash misollaridir; o'zingiz rasm yuklamoqchi bo'lsangiz, src atributlarini almashtiring.
+-->
+
+<!-- FILE: index.html -->
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mahalla Shop — Zamonaviy katta rasmli</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="layout modern">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">Mahalla<span>Shop</span></a>
+      <nav class="nav">
+        <a href="index.html">Bosh</a>
+        <a href="products.html">Mahsulotlar</a>
+        <a href="gallery.html">Galereya</a>
+        <a href="contact.html">Bog'lanish</a>
+      </nav>
+      <a class="cta" href="products.html">Hoziroq ko'rish</a>
+      <button class="burger" aria-label="menu">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO: CSS slider with big images (banan, meva, non, shirinlik) -->
+  <section class="hero">
+    <div class="hero-slider">
+      <input type="radio" name="slides" id="s1" checked>
+      <input type="radio" name="slides" id="s2">
+      <input type="radio" name="slides" id="s3">
+
+      <ul class="slides">
+        <li class="slide s1">
+          <img src="https://images.unsplash.com/photo-1574226516831-e2923f27c7d2?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bananlar">
+          <div class="slide-caption"><h1>Yangi bananlar — tabiiy va shirin</h1><p>Bananlar har kuni yangi yetkazib beriladi.</p></div>
+        </li>
+        <li class="slide s2">
+          <img src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Mevalar">
+          <div class="slide-caption"><h1>Meva assortimenti — rang-barang va mazali</h1><p>Olma, uzum, apelsin va boshqalar.</p></div>
+        </li>
+        <li class="slide s3">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Non va shirinlik">
+          <div class="slide-caption"><h1>Tez pishirilgan non va shirinliklar</h1><p>Xomashyo sifatiga e'tibor bilan.</p></div>
+        </li>
+      </ul>
+      <div class="slider-nav">
+        <label for="s1"></label>
+        <label for="s2"></label>
+        <label for="s3"></label>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="highlights container">
+      <div class="big-card">
+        <img src="https://images.unsplash.com/photo-1542831371-d531d36971e6?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Banan chiqim">
+        <div>
+          <h2>Katta chegirmalar — banan paketlari</h2>
+          <p>Oilaviy paketlar uchun maxsus narxlar.</p>
+          <a class="btn" href="products.html">Barchasini ko'rish</a>
+        </div>
+      </div>
+
+      <div class="grid-cards">
+        <article class="card-large">
+          <img src="https://images.unsplash.com/photo-1542831371-0b30f52a9b1a?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Non">
+          <h3>Non mahsulotlari</h3>
+          <p>Yangi nonlar, patelar va pishloqli dasturxonlar.</p>
+        </article>
+        <article class="card-large">
+          <img src="https://images.unsplash.com/photo-1559628233-4f7b8be1f6a0?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Shirinlik">
+          <h3>Shirinliklar</h3>
+          <p>Mahalliy shirinliklar va tortlar — bayram uchun.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="big-gallery container">
+      <h2>Mahsulotlar galereyasi</h2>
+      <div class="gallery-grid">
+        <figure><img src="https://images.unsplash.com/photo-1582515073490-399813b2c0f3?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Banan to'plam"><figcaption>Banan to'plam</figcaption></figure>
+        <figure><img src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Meva savati"><figcaption>Meva savati</figcaption></figure>
+        <figure><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Nonlar"><figcaption>Nonlar</figcaption></figure>
+        <figure><img src="https://images.unsplash.com/photo-1546069901-eacef0df6022?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Shirinliklar"><figcaption>Shirinliklar</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="featured-products container">
+      <h2>Tez tanlov</h2>
+      <div class="featured-grid">
+        <article class="product-hero">
+          <img src="https://images.unsplash.com/photo-1574226516831-e2923f27c7d2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Banan pack">
+          <h3>Banan pack — oilaviy</h3>
+          <p class="price">35 000 so'm</p>
+          <a class="btn" href="product-detail.html">Savatchaga</a>
+        </article>
+        <article class="product-hero">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Non paket">
+          <h3>Yonib pishgan non</h3>
+          <p class="price">8 000 so'm</p>
+          <a class="btn" href="product-detail.html">Savatchaga</a>
+        </article>
+        <article class="product-hero">
+          <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Shirinlik tort">
+          <h3>Mahalla torti — shirin</h3>
+          <p class="price">75 000 so'm</p>
+          <a class="btn" href="product-detail.html">Savatchaga</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="logo footer-logo" href="index.html">Mahalla<span>Shop</span></a>
+        <p>Katta rasm, zamonaviy interfeys — meva, non va shirinlik markazi.</p>
+      </div>
+      <div>
+        <h4>Havolalar</h4>
+        <ul>
+          <li><a href="products.html">Mahsulotlar</a></li>
+          <li><a href="gallery.html">Galereya</a></li>
+          <li><a href="contact.html">Bog'lanish</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Manzil</h4>
+        <address>Mahalla ko'chasi 12, Sizning shahar</address>
+      </div>
+    </div>
+    <div class="container copyright">© 2025 MahallaShop</div>
+  </footer>
+</body>
+</html>
+
+
+<!-- NOTE: Quyidagi sahifalar index.html bilan moslashgan, lekin kontent meva, banan, non, shirinliklarga yo'naltirilgan. Siz ulardan nusxa olib o'zgartirishingiz mumkin. -->
+
+<!-- FILE: products.html -->
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mahsulotlar — Mahalla Shop</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="layout modern">
+  <header class="site-header"><div class="container header-inner"><a class="logo" href="index.html">Mahalla<span>Shop</span></a><nav class="nav"><a href="index.html">Bosh</a><a href="products.html">Mahsulotlar</a><a href="gallery.html">Galereya</a><a href="contact.html">Bog'lanish</a></nav></div></header>
+  <main class="container">
+    <h1>Mahsulotlar — Meva, Banan, Non, Shirinlik</h1>
+    <div class="filters big-filters">
+      <input placeholder="Mahsulotni qidiring (masalan: banan)" />
+      <select>
+        <option>Hammasi</option>
+        <option>Meva</option>
+        <option>Non</option>
+        <option>Shirinlik</option>
+      </select>
+    </div>
+
+    <section class="product-grid-large">
+      <!-- example product cards -->
+      <article class="product-card-large">
+        <img src="https://images.unsplash.com/photo-1582515073490-399813b2c0f3?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Banan pack">
+        <div class="pc-body">
+          <h3>Banan pack — 1kg</h3>
+          <p class="muted">Tabiiy va shirin</p>
+          <div class="pc-foot"><span class="price">35 000 so'm</span><a class="btn small" href="product-detail.html">Ko'rish</a></div>
+        </div>
+      </article>
+
+      <article class="product-card-large">
+        <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Non shakli">
+        <div class="pc-body">
+          <h3>Toza non (500g)</h3>
+          <p class="muted">Har kuni yangi</p>
+          <div class="pc-foot"><span class="price">8 000 so'm</span><a class="btn small" href="product-detail.html">Ko'rish</a></div>
+        </div>
+      </article>
+
+      <article class="product-card-large">
+        <img src="https://images.unsplash.com/photo-1546069901-eacef0df6022?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Tort">
+        <div class="pc-body">
+          <h3>Shirinlik torti — 1 dona</h3>
+          <p class="muted">Bayram uchun ideal</p>
+          <div class="pc-foot"><span class="price">75 000 so'm</span><a class="btn small" href="product-detail.html">Ko'rish</a></div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container">© 2025 MahallaShop</div></footer>
+</body>
+</html>
+
+
+<!-- FILES: product-detail.html, about.html, contact.html, gallery.html, cart.html, faq.html, blog.html, terms.html -->
+<!-- Ularning strukturasini index va products sahifalariga moslab yangilang. Gallery sahifasida katta rasm grid bo'lsin. Contact sahifasida sorov formasi, About sahifasida mahsulot manbalari haqida ma'lumot. -->
+
+<!-- CSS: css/styles.css -->
+:root{
+  --bg:#fff;
+  --muted:#6b7280;
+  --accent:#ff6b35;
+  --accent-2:#ffb86b;
+  --container:1200px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#fbfbfd,#f4f6f8);color:#0b1220;margin:0}
+.container{max-width:var(--container);margin:0 auto;padding:1.25rem}
+.layout{display:flex;flex-direction:column;min-height:100vh}
+.site-header{position:sticky;top:0;background:#fff;box-shadow:0 6px 30px rgba(2,6,23,0.06);z-index:50}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem}
+.logo{font-weight:800;font-size:1.25rem;color:var(--accent);text-decoration:none}
+.logo span{color:#0b1220}
+.nav{display:flex;gap:1rem}
+.nav a{text-decoration:none;color:#0b1220;padding:0.5rem 0.75rem;border-radius:8px}
+.nav a:hover{background:rgba(11,18,32,0.04)}
+.cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:0.6rem 1rem;border-radius:12px;text-decoration:none}
+.burger{display:none;border:0;background:none;font-size:1.25rem}
+
+/* HERO slider */
+.hero{margin:0}
+.hero-slider{position:relative;overflow:hidden}
+.slides{list-style:none;padding:0;margin:0;display:flex;transition:transform 0.7s ease}
+.slide{min-width:100%;position:relative}
+.slide img{width:100%;height:70vh;object-fit:cover;display:block;filter:contrast(95%)}
+.slide-caption{position:absolute;left:6%;top:30%;color:#fff;max-width:560px;text-shadow:0 8px 30px rgba(2,6,23,0.5)}
+.slide-caption h1{font-size:3rem;margin:0 0 0.5rem}
+.slide-caption p{font-size:1.125rem;color:rgba(255,255,255,0.9)}
+.slider-nav{position:absolute;left:50%;transform:translateX(-50%);bottom:18px;display:flex;gap:10px}
+.slider-nav label{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.6);display:block;cursor:pointer}
+
+/* radio controls affect slide position */
+#s1:checked ~ .slides{transform:translateX(0%)}
+#s2:checked ~ .slides{transform:translateX(-100%)}
+#s3:checked ~ .slides{transform:translateX(-200%)}
+
+/* Highlights */
+.highlights{display:flex;gap:1.5rem;align-items:start;margin-top:-4rem}
+.big-card{display:flex;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(2,6,23,0.06);flex:2}
+.big-card img{width:50%;height:100%;object-fit:cover}
+.big-card div{padding:2rem}
+.grid-cards{display:grid;grid-template-columns:repeat(1,1fr);gap:1rem;flex:1}
+.card-large{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(2,6,23,0.06)}
+.card-large img{width:100%;height:160px;object-fit:cover}
+.card-large h3{margin:0.75rem;padding:0 1rem}
+
+/* gallery */
+.big-gallery h2{margin-top:2rem}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:1rem}
+.gallery-grid figure{background:#fff;border-radius:12px;overflow:hidden;text-align:center}
+.gallery-grid img{width:100%;height:220px;object-fit:cover}
+.gallery-grid figcaption{padding:0.75rem;color:var(--muted)}
+
+/* featured products */
+.featured-products{margin-top:2rem}
+.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.product-hero{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,23,0.06);text-align:center;padding-bottom:1rem}
+.product-hero img{width:100%;height:240px;object-fit:cover}
+.product-hero h3{margin:0.75rem 0}
+.price{font-weight:800;color:var(--accent)}
+
+/* Products page */
+.big-filters{display:flex;gap:1rem;margin:1rem 0}
+.big-filters input{flex:1;padding:0.8rem;border-radius:10px;border:1px solid #e6eef6}
+.big-filters select{padding:0.8rem;border-radius:10px;border:1px solid #e6eef6}
+.product-grid-large{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+.product-card-large{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(2,6,23,0.06)}
+.product-card-large img{width:100%;height:260px;object-fit:cover}
+.pc-body{padding:1rem}
+.pc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+
+/* Footer */
+.site-footer{background:#fff;margin-top:2rem;padding:2rem 0;border-top:1px solid #eef2f6}
+.footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.copyright{text-align:center;color:var(--muted);margin-top:1rem}
+
+/* Responsive */
+@media (max-width:1100px){
+  .gallery-grid{grid-template-columns:repeat(3,1fr)}
+  .product-grid-large{grid-template-columns:repeat(2,1fr)}
+  .slide-caption h1{font-size:2.2rem}
+}
+@media (max-width:700px){
+  .nav{display:none}
+  .burger{display:block}
+  .big-card{flex-direction:column}
+  .big-card img{width:100%;height:220px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .product-grid-large{grid-template-columns:1fr}
+  .slide-caption{left:5%;top:18%}
+  .slide-caption h1{font-size:1.6rem}
+}
+
+/* Small utilities */
+.btn{background:var(--accent);color:#fff;padding:0.6rem 1rem;border-radius:10px;text-decoration:none}
+.btn.small{padding:0.4rem 0.6rem;font-size:0.9rem;border-radius:8px}
+.muted{color:var(--muted)}
+
+/* End of CSS */
+<!--
 Project: Mahalla Shop - 10 modern HTML + CSS pages
 Instructions: Save each section below as a separate file in a single folder (e.g. "mahalla-shop/").
 Files included:
