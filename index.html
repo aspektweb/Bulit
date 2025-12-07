@@ -1,195 +1,154 @@
-/**
- * server.js
- * Simple Express server that serves a static frontend and provides API endpoints
- * for a survey: GET /api/questions, POST /api/submit, GET /api/results
- *
- * Database: SQLite (file: survey.db)
- *
- * Usage:
- *   npm install
- *   node server.js
- *
- * Server listens on port 3000 by default.
- */
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doʻkon nomi - Sifatli mahsulotlar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Doʻkon Logosi</h1>
+            <ul>
+                <li><a href="index.html">Bosh Sahifa</a></li>
+                <li><a href="mahsulotlar.html">Mahsulotlar</a></li>
+                <li><a href="kontakt.html">Aloqa</a></li>
+            </ul>
+        </nav>
+    </header>
 
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs');
+    <main>
+        <section id="banner">
+            <h2>Mahalliy Sifat, Yangi Tanlov!</h2>
+            <p>Eng yangi va eng yaxshi mahsulotlarni bizning doʻkonimizdan toping.</p>
+            <a href="mahsulotlar.html" class="button">Katalogga oʻtish</a>
+        </section>
 
-// --- Config ---
-const PORT = process.env.PORT || 3000;
-const DB_FILE = path.join(__dirname, 'survey.db');
+        <section id="about">
+            <h3>Biz haqimizda</h3>
+            <p>Doʻkonimiz 2020 yilda tashkil etilgan boʻlib, har doim mijozlarga eng yuqori darajadagi xizmat va yangi mahsulotlarni yetkazib berishga intiladi.</p>
+        </section>
 
-// --- Create app ---
-const app = express();
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+        <section id="featured-products">
+            <h3>Tanlangan mahsulotlar</h3>
+            <div class="product-grid">
+                <div class="product-card">
+                    <h4>Mahsulot 1</h4>
+                    <p>Yangi narx: 45,000 soʻm</p>
+                </div>
+                <div class="product-card">
+                    <h4>Mahsulot 2</h4>
+                    <p>Yangi narx: 75,000 soʻm</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-// --- Initialize DB ---
-let dbExists = fs.existsSync(DB_FILE);
-const db = new sqlite3.Database(DB_FILE, (err) => {
-  if (err) {
-    console.error('DB open error:', err);
-    process.exit(1);
-  }
-});
-if (!dbExists) {
-  // Create tables if DB file didn't exist
-  db.serialize(() => {
-    db.run(`
-      CREATE TABLE questions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        key_text TEXT NOT NULL UNIQUE,
-        label TEXT NOT NULL,
-        type TEXT NOT NULL,
-        required INTEGER NOT NULL DEFAULT 1,
-        meta TEXT
-      );
-    `);
-    db.run(`
-      CREATE TABLE responses (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        created_at TEXT NOT NULL,
-        answers_json TEXT NOT NULL
-      );
-    `);
-    // Insert default questions
-    const stmt = db.prepare(`
-      INSERT INTO questions (key_text, label, type, required, meta)
-      VALUES (?, ?, ?, ?, ?)
-    `);
+    <footer>
+        <p>&copy; 2024 Doʻkon nomi. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulotlar Katalogi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Doʻkon Logosi</h1>
+            <ul>
+                <li><a href="index.html">Bosh Sahifa</a></li>
+                <li><a href="mahsulotlar.html">Mahsulotlar</a></li>
+                <li><a href="kontakt.html">Aloqa</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    // A sample survey with various input types
-    stmt.run('name', 'Ismingiz', 'text', 1, JSON.stringify({placeholder: 'Ism familya'}));
-    stmt.run('age', 'Yoshingiz', 'number', 1, JSON.stringify({min: 10, max: 120}));
-    stmt.run('gender', 'Jinsingiz', 'radio', 1, JSON.stringify({options: ['Erkak', 'Ayol', 'Boshqa', 'Javob bermoqchi emas']}));
-    stmt.run('education', 'Ta\'lim darajangiz', 'select', 1, JSON.stringify({options: ['Maktab', 'Oliy', 'Kasb-hunar', 'Boshqa']}));
-    stmt.run('satisfaction', 'Xizmatimizdan qancha mamnunsiz?', 'range', 1, JSON.stringify({min: 0, max: 10}));
-    stmt.run('features', 'Qaysi funksiyalar sizga yoqdi? (bir nechta tanlash mumkin)', 'checkbox', 0, JSON.stringify({options: ['Tezkor', 'Foydalanish oson', 'Dizayn', 'Ishonchlilik']}));
-    stmt.run('improvements', 'Taklif yoki izohlar', 'textarea', 0, JSON.stringify({placeholder: 'Bu yerga yozing...'}));
-    stmt.run('email', 'Elektron pochta (ixtiyoriy)', 'email', 0, JSON.stringify({placeholder: 'you@example.com'}));
-    stmt.finalize();
-    console.log('Database initialized with sample questions.');
-  });
-}
+    <main>
+        <h2>Bizning Mahsulotlarimiz</h2>
+        <section id="product-list">
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="images/product3.jpg" alt="Mahsulot nomi">
+                    <h4>Kitob nomi</h4>
+                    <p class="price">99,000 soʻm</p>
+                    <p class="description">Qisqacha tavsif. Ajoyib sifat va chegirmalar!</p>
+                    <a href="#" class="add-to-cart">Savatchaga qoʻshish</a>
+                </div>
+                <div class="product-card">
+                    <img src="images/product4.jpg" alt="Mahsulot nomi">
+                    <h4>Qalamlar toʻplami</h4>
+                    <p class="price">15,000 soʻm</p>
+                    <p class="description">Oʻquvchilar uchun eng yaxshi toʻplam.</p>
+                    <a href="#" class="add-to-cart">Savatchaga qoʻshish</a>
+                </div>
+                </div>
+        </section>
+    </main>
 
-function getQuestionsFromDB() {
-  return new Promise((resolve, reject) => {
-    db.all(`SELECT id, key_text AS key, label, type, required, meta FROM questions ORDER BY id ASC`, [], (err, rows) => {
-      if (err) return reject(err);
-      const qs = rows.map(r => {
-        let meta = {};
-        try { meta = JSON.parse(r.meta || '{}'); } catch(e) { meta = {}; }
-        return {
-          id: r.id,
-          key: r.key,
-          label: r.label,
-          type: r.type,
-          required: !!r.required,
-          meta
-        };
-      });
-      resolve(qs);
-    });
-  });
-}
+    <footer>
+        <p>&copy; 2024 Doʻkon nomi. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloqa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Doʻkon Logosi</h1>
+            <ul>
+                <li><a href="index.html">Bosh Sahifa</a></li>
+                <li><a href="mahsulotlar.html">Mahsulotlar</a></li>
+                <li><a href="kontakt.html">Aloqa</a></li>
+            </ul>
+        </nav>
+    </header>
 
-// --- API: Get questions ---
-app.get('/api/questions', async (req, res) => {
-  try {
-    const qs = await getQuestionsFromDB();
-    res.json({ ok: true, questions: qs });
-  } catch (err) {
-    console.error('GET /api/questions error', err);
-    res.status(500).json({ ok: false, error: 'Server error' });
-  }
-});
+    <main>
+        <h2>Biz bilan bogʻlaning</h2>
 
-// --- API: Submit response ---
-app.post('/api/submit', async (req, res) => {
-  try {
-    const answers = req.body.answers;
-    if (!answers || typeof answers !== 'object') {
-      return res.status(400).json({ ok: false, error: 'Invalid payload: answers expected' });
-    }
+        <section id="contact-form">
+            <h3>Xabar yuborish</h3>
+            <form action="#" method="POST">
+                <label for="name">Ismingiz:</label>
+                <input type="text" id="name" name="name" required>
 
-    // Basic server-side validation: required fields
-    const questions = await getQuestionsFromDB();
-    const missing = [];
-    for (const q of questions) {
-      if (q.required) {
-        if (!(q.key in answers) || answers[q.key] === null || answers[q.key] === '' || (Array.isArray(answers[q.key]) && answers[q.key].length === 0)) {
-          missing.push(q.key);
-        }
-      }
-    }
-    if (missing.length) {
-      return res.status(400).json({ ok: false, error: 'Missing required fields', missing });
-    }
+                <label for="email">E-mail manzilingiz:</label>
+                <input type="email" id="email" name="email" required>
 
-    // Save to DB
-    const createdAt = new Date().toISOString();
-    const stmt = db.prepare(`INSERT INTO responses (created_at, answers_json) VALUES (?, ?)`);
-    stmt.run(createdAt, JSON.stringify(answers), function (err) {
-      if (err) {
-        console.error('DB insert error', err);
-        return res.status(500).json({ ok: false, error: 'Failed to save response' });
-      }
-      res.json({ ok: true, id: this.lastID, created_at: createdAt });
-    });
-    stmt.finalize();
-  } catch (err) {
-    console.error('POST /api/submit error', err);
-    res.status(500).json({ ok: false, error: 'Server error' });
-  }
-});
+                <label for="message">Xabaringiz:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
 
-// --- API: Get results (summary) ---
-app.get('/api/results', (req, res) => {
-  // Returns all responses (capped) and an aggregated summary
-  db.all(`SELECT id, created_at, answers_json FROM responses ORDER BY id DESC LIMIT 500`, [], (err, rows) => {
-    if (err) {
-      console.error('GET /api/results db error', err);
-      return res.status(500).json({ ok: false, error: 'DB error' });
-    }
-    const responses = rows.map(r => {
-      try { return { id: r.id, created_at: r.created_at, answers: JSON.parse(r.answers_json) }; }
-      catch(e) { return { id: r.id, created_at: r.created_at, answers: {} }; }
-    });
+                <button type="submit" class="button">Yuborish</button>
+            </form>
+        </section>
 
-    // Simple aggregation for some known keys if present
-    const agg = {
-      totalResponses: responses.length,
-      avgAge: null,
-      satisfactionAvg: null,
-      genderCounts: {}
-    };
-    let ageSum = 0, ageCount = 0;
-    let satSum = 0, satCount = 0;
-    for (const r of responses) {
-      const a = r.answers;
-      if (a.age && !isNaN(Number(a.age))) { ageSum += Number(a.age); ageCount++; }
-      if (a.satisfaction !== undefined && !isNaN(Number(a.satisfaction))) { satSum += Number(a.satisfaction); satCount++; }
-      if (a.gender) {
-        const g = String(a.gender);
-        agg.genderCounts[g] = (agg.genderCounts[g] || 0) + 1;
-      }
-    }
-    if (ageCount) agg.avgAge = +(ageSum / ageCount).toFixed(2);
-    if (satCount) agg.satisfactionAvg = +(satSum / satCount).toFixed(2);
+        <section id="location-info">
+            <h3>Manzil va Telefon</h3>
+            <p><strong>Manzil:</strong> Toshkent sh., Chilonzor tumani, 7-kvartal, 12-uy</p>
+            <p><strong>Telefon:</strong> +998 (99) 123-45-67</p>
+            <p><strong>Ish vaqti:</strong> Dushanba-Shanba, 9:00 - 19:00</p>
+            <div id="map">
+                [Xarita joylashuvi]
+            </div>
+        </section>
+    </main>
 
-    res.json({ ok: true, responses, summary: agg });
-  });
-});
-
-// --- Serve index.html for any other route (client-side routing safe) ---
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// --- Start server ---
-app.listen(PORT, () => {
-  console.log(`Survey app listening at http://localhost:${PORT}`);
-});
+    <footer>
+        <p>&copy; 2024 Doʻkon nomi. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>
