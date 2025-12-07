@@ -1,1 +1,13 @@
+# My Developer Site
 
+Bu sayt mening ishlarim va loyihalarimni ko‘rsatadi. HTML va CSS orqali yaratilgan va Vercel orqali jonlanishi mumkin.
+
+## Ishga tushirish
+
+1. Fayllarni yuklab oling.
+2. `index.html` faylini brauzerda oching.
+
+## Loyiha tarkibi
+
+- `index.html` – saytning asosiy fayli
+- `style.css` – dizayn va stil fayli
