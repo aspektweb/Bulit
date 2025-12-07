@@ -1,0 +1,289 @@
+/* ====================================
+   Global Uslublar
+   ==================================== */
+:root {
+    --primary-color: #007bff; /* Asosiy ko'k rang */
+    --secondary-color: #6c757d; /* Kulrang */
+    --accent-color: #28a745; /* Yashil (tugmalar uchun) */
+    --text-dark: #343a40; /* To'q rangli matn */
+    --background-light: #f8f9fa; /* Yengil fon */
+    --font-family: 'Arial', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Tugma (Button) uslubi */
+.button {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+.button:hover {
+    background: #218838; /* To'qroq yashil */
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section {
+    padding: 40px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ====================================
+   Header va Navigatsiya
+   ==================================== */
+header {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav h1 {
+    font-size: 1.8em;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--background-light);
+    text-decoration: none;
+}
+
+/* ====================================
+   Bosh Sahifa Qismlari
+   ==================================== */
+
+/* Banner */
+#banner {
+    background: var(--background-light);
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#banner h2 {
+    font-size: 2.5em;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+#banner p {
+    font-size: 1.2em;
+    color: var(--secondary-color);
+}
+
+/* Mahsulotlar Ro'yxati (Grid) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.product-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.product-card .price {
+    font-size: 1.2em;
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-card .add-to-cart {
+    display: block;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.product-card .add-to-cart:hover {
+    background: #0056b3;
+}
+
+/* ====================================
+   Aloqa Sahifasi (Kontakt)
+   ==================================== */
+
+#contact-form {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: var(--background-light);
+}
+
+#contact-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#contact-form input[type="text"],
+#contact-form input[type="email"],
+#contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+#contact-form textarea {
+    resize: vertical;
+}
+
+#location-info {
+    text-align: center;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+#location-info p {
+    margin-bottom: 10px;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    background: #e9ecef; /* Xarita o'rnini ko'rsatuvchi kulrang fon */
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+}
+
+
+/* ====================================
+   Footer
+   ==================================== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: var(--text-dark);
+    color: #fff;
+    margin-top: 30px;
+}
+
+
+/* ====================================
+   Mobil qurilmalar uchun moslashuv (Responsive)
+   ==================================== */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        margin-top: 10px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    #banner {
+        padding: 60px 10px;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr; /* Kichik ekranlarda bitta ustun */
+    }
+}
