@@ -3,161 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Realistik 3D Quyosh Tizimi</title>
+    <title>3D Quyosh Tizimi - Mukammal</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #000;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        body { margin: 0; overflow: hidden; background: #000; color: white; font-family: sans-serif; }
         canvas { display: block; }
 
-        /* Asosiy overlay matni */
-        .overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            pointer-events: none;
-            text-shadow: 0 0 15px rgba(0,0,0,0.7);
-            z-index: 10;
-        }
-        .overlay h1 { font-size: 2.5rem; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
-        .overlay p { font-size: 1rem; opacity: 0.8; margin-top: 5px; }
-
-        /* Sayyora nomi ko'rinishi */
-        .planet-label {
-            position: absolute;
-            color: white;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            pointer-events: none;
-            opacity: 0; /* Boshida ko'rinmas */
-            transition: opacity 0.3s ease-in-out;
-            transform: translate(-50%, -120%); /* Sayyora tepasiga joylashadi */
-            z-index: 11;
-        }
-        .planet-label.visible {
-            opacity: 1;
-        }
-
-        /* Ma'lumotlar oynasi */
+        /* Ma'lumotlar oynasi - yanada zamonaviy */
         #info-box {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Markazda */
-            width: 350px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 30px;
-            background: rgba(10, 20, 30, 0.95);
-            border: 2px solid #00c8a0;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 200, 160, 0.5);
-            display: none; /* Boshida yopiq */
-            pointer-events: all;
-            z-index: 12;
-            animation: fadeIn 0.5s ease-out;
-        }
-        #info-box.active {
-            display: block;
+            bottom: 30px;
+            left: 30px;
+            width: 300px;
+            padding: 20px;
+            background: rgba(0, 20, 40, 0.85);
+            border-left: 5px solid #00ffcc;
+            border-radius: 0 15px 15px 0;
+            display: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+            z-index: 100;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -60%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
+        #p-name { font-size: 1.8rem; color: #00ffcc; margin: 0 0 10px 0; font-weight: bold; }
+        #p-info { font-size: 1rem; line-height: 1.5; opacity: 0.9; }
 
-        #info-box .close-btn {
+        .controls-hint {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.8rem;
-            color: #00c8a0;
-            cursor: pointer;
-            line-height: 1;
-        }
-        #info-box .close-btn:hover {
-            color: #00ffc0;
-        }
-
-        #info-box .p-title {
-            color: #00ffc0;
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0,255,192,0.3);
-        }
-        #info-box .p-details {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            text-align: justify;
-            max-width: 100%;
-        }
-        #info-box .p-details ul {
-            list-style-type: disc;
-            margin-left: 20px;
-            padding: 0;
-        }
-        #info-box .p-details li {
-            margin-bottom: 8px;
-        }
-
-        /* Yuklanish ekrani */
-        #loading-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #000000, #1a2a3a);
-            color: #00c8a0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            z-index: 999;
-            transition: opacity 1s ease-out;
-        }
-        #loading-screen p {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            opacity: 0.7;
-        }
-
-        /* Fokus effekt */
-        .focused {
-            border: 2px solid #00ffc0 !important;
-            box-shadow: 0 0 20px #00ffc0;
+            top: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-align: right;
         }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div style="font-size: 4rem;">🚀</div>
-        <h1>Yuklanmoqda...</h1>
-        <p>Quyosh tizimi modellari yuklanmoqda. Iltimos, kuting.</p>
-    </div>
-
-    <div class="overlay">
-        <h1>Quyosh Tizimi</h1>
-        <p>3D interaktiv model. Sayyorani bosib ma'lumot oling.</p>
-    </div>
-
     <div id="info-box">
-        <span class="close-btn" onclick="document.getElementById('info-box').classList.remove('active');">&times;</span>
-        <div class="p-title" id="p-name"></div>
-        <div class="p-details" id="p-info"></div>
+        <div id="p-name">Sayyora</div>
+        <div id="p-info">Ma'lumot...</div>
+    </div>
+
+    <div class="controls-hint">
+        Sichqoncha: Aylantirish / Yaqinlashtirish<br>
+        Sayyora ustiga bosing
     </div>
 
     <script type="importmap">
@@ -173,265 +62,112 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // --- GLOBAL SOZLAMALAR ---
-        const TEXTURE_PATH = "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/";
-        const PLANET_SCALE_FACTOR = 0.5; // Sayyoralarning umumiy hajmini kichraytirish
-        const DISTANCE_SCALE_FACTOR = 3; // Sayyoralar orasidagi masofani oshirish
-        const ORBIT_SPEED_FACTOR = 0.5; // Orbit tezligini boshqarish
-
+        // 1. Sahna va Kamera
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 50 * DISTANCE_SCALE_FACTOR, 100 * DISTANCE_SCALE_FACTOR);
+        camera.position.set(0, 60, 120);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(renderer.domElement);
 
-        // Yuklanish menejeri
-        const loadingManager = new THREE.LoadingManager();
-        const textureLoader = new THREE.TextureLoader(loadingManager);
-
-        loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
-            console.log(`Loading file: ${url}.\nLoaded ${itemsLoaded} of ${itemsTotal} files.`);
-            // Yuklanish progress barini ko'rsatish mumkin
-        };
-
-        loadingManager.onLoad = function () {
-            document.getElementById('loading-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-            }, 1000);
-            animate(); // Animatsiyani yuklanish tugagach boshlash
-        };
-
-        // --- YORUG'LIKLAR ---
-        // Quyoshdan tarqaladigan yorug'lik
-        const sunLight = new THREE.PointLight(0xffffff, 20000, 0, 2); // Rangi, intensivligi, masofasi, buzilishi
+        // 2. Yorug'lik (Quyosh nuri)
+        const sunLight = new THREE.PointLight(0xffffff, 2000, 500);
         scene.add(sunLight);
+        scene.add(new THREE.AmbientLight(0x444444)); // Umumiy yorug'lik
 
-        // Atrofdagi yorug'lik
-        const ambientLight = new THREE.AmbientLight(0x333333);
-        scene.add(ambientLight);
+        // 3. Yulduzlar (Background)
+        const starGeo = new THREE.BufferGeometry();
+        const starPoints = [];
+        for(let i=0; i<10000; i++) starPoints.push((Math.random()-0.5)*1500, (Math.random()-0.5)*1500, (Math.random()-0.5)*1500);
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPoints, 3));
+        scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.7})));
 
-        // --- YULDUZLAR (ORQA FON) ---
-        function createStars() {
-            const starGeometry = new THREE.BufferGeometry();
-            const starVertices = [];
-            for (let i = 0; i < 20000; i++) {
-                const x = (Math.random() - 0.5) * 2000;
-                const y = (Math.random() - 0.5) * 2000;
-                const z = (Math.random() - 0.5) * 2000;
-                starVertices.push(x, y, z);
-            }
-            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-            const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.8 });
-            const stars = new THREE.Points(starGeometry, starMaterial);
-            scene.add(stars);
-        }
-        createStars();
-
-        // --- SAYYORA MA'LUMOTLARI BAZASI VA TEKSTURALAR ---
-        const planetsData = [
-            {
-                name: "Quyosh", radius: 10 * PLANET_SCALE_FACTOR, dist: 0, orbitalSpeed: 0, rotationSpeed: 0.005,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/sun.jpg"),
-                info: "Quyosh tizimining markaziy yulduzi, hayotning asosiy manbai. Uning massasi tizimdagi barcha obyektlarning 99.8% ini tashkil qiladi."
-            },
-            {
-                name: "Merkuriy", radius: 1 * PLANET_SCALE_FACTOR, dist: 25 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.048 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.008,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/mercury.jpg"),
-                info: "Quyoshga eng yaqin va Quyosh tizimidagi eng kichik sayyora. Katta harorat farqlari bilan mashhur."
-            },
-            {
-                name: "Venera", radius: 2.5 * PLANET_SCALE_FACTOR, dist: 35 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.035 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.002,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/venus.jpg"),
-                info: "Zich va zaharli atmosferasi tufayli juda issiq sayyora. Kecha va kunduz haroratlari orasida deyarli farq yo'q."
-            },
-            {
-                name: "Yer", radius: 2.7 * PLANET_SCALE_FACTOR, dist: 45 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.029 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.01,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/earth_atmos_2048.jpg"),
-                specularMap: textureLoader.load(TEXTURE_PATH + "solar_system/earth_specular_2048.jpg"), // Yorqinlik
-                normalMap: textureLoader.load(TEXTURE_PATH + "solar_system/earth_normal_2048.jpg"), // Relyef
-                info: "Bizning uyimiz. Suv va hayot mavjud bo'lgan yagona ma'lum sayyora. Yerdan koinotni kashf etamiz."
-            },
-            {
-                name: "Oy", radius: 0.7 * PLANET_SCALE_FACTOR, dist: 4 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.06 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.005,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/moon.jpg"),
-                parent: "Yer", // O'zining pivotini Yernikiga bog'lash
-                info: "Yerni aylanib yuradigan yagona tabiiy yo'ldosh. Uning yuzasi kraterlar bilan qoplangan."
-            },
-            {
-                name: "Mars", radius: 1.5 * PLANET_SCALE_FACTOR, dist: 60 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.024 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.009,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/mars.jpg"),
-                info: "Qizil sayyora deb nomlanadi. Suv izlari topilgan va kelajakda koloniyalar uchun nomzod hisoblanadi."
-            },
-            {
-                name: "Yupiter", radius: 6 * PLANET_SCALE_FACTOR, dist: 80 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.013 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.015,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/jupiter.jpg"),
-                info: "Quyosh tizimidagi eng katta gaz giganti. Uning yuzasida mashhur Katta Qizil Dog'i bor."
-            },
-            {
-                name: "Saturn", radius: 5 * PLANET_SCALE_FACTOR, dist: 110 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.009 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.012,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/saturn.jpg"),
-                ringTexture: textureLoader.load(TEXTURE_PATH + "solar_system/saturn_ring.png"), // Halqa teksturasi
-                info: "Halqalari bilan mashhur bo'lgan ikkinchi eng katta gaz giganti. Uning halqalari minglab muz bo'laklaridan iborat."
-            },
-            {
-                name: "Uran", radius: 4 * PLANET_SCALE_FACTOR, dist: 140 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.006 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.007,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/uranus.jpg"),
-                info: "Muz giganti. Uning o'qi yon tomonga egilgan, bu uni noodatiy ko'rinishga olib keladi."
-            },
-            {
-                name: "Neptun", radius: 4 * PLANET_SCALE_FACTOR, dist: 170 * DISTANCE_SCALE_FACTOR, orbitalSpeed: 0.005 * ORBIT_SPEED_FACTOR, rotationSpeed: 0.006,
-                textureMap: textureLoader.load(TEXTURE_PATH + "solar_system/neptune.jpg"),
-                info: "Muz giganti. Quyosh tizimidagi eng uzoq sayyoralardan biri. Katta shamollar bilan mashhur."
-            }
+        // 4. Sayyora Ma'lumotlari
+        const planets = [
+            { name: "Quyosh", size: 12, dist: 0, speed: 0, color: 0xffcc00, info: "Quyosh tizimining markazi. Yer yuzidagi barcha hayot manbai." },
+            { name: "Merkuriy", size: 1.2, dist: 25, speed: 0.02, color: 0xaaaaaa, info: "Quyoshga eng yaqin kichik sayyora." },
+            { name: "Venera", size: 2.2, dist: 35, speed: 0.015, color: 0xffddaa, info: "Eng issiq sayyora, atmosferasi o'ta zich." },
+            { name: "Yer", size: 2.5, dist: 48, speed: 0.01, color: 0x2277ff, info: "Bizning uyimiz. Suyuq suv va hayot mavjud." },
+            { name: "Mars", size: 1.8, dist: 60, speed: 0.008, color: 0xff5533, info: "Qizil sayyora. Insoniyat kelajakda kolonizatsiya qilishi kutilmoqda." },
+            { name: "Yupiter", size: 6, dist: 85, speed: 0.004, color: 0xffaa88, info: "Eng ulkan gaz giganti. Unda buyuk bo'ronlar bor." },
+            { name: "Saturn", size: 5, dist: 115, speed: 0.003, color: 0xeeddaa, info: "O'zining go'zal halqalari bilan ajralib turadi." }
         ];
 
-        const solarSystemObjects = []; // Barcha 3D obyektlarni saqlash uchun
-        const interactiveMeshes = []; // Click uchun faqat meshlar
-
-        planetsData.forEach(pData => {
-            const planetGeometry = new THREE.SphereGeometry(pData.radius, 64, 64);
-            const planetMaterial = new THREE.MeshStandardMaterial({
-                map: pData.textureMap,
-                roughness: 0.9,
-                metalness: 0.1,
-                specularMap: pData.specularMap,
-                normalMap: pData.normalMap
-            });
-
-            const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
-            planetMesh.name = pData.name; // Sayyoraning nomini meshga saqlaymiz
-
-            const planetPivot = new THREE.Object3D(); // Orbit uchun pivot
-            planetPivot.add(planetMesh);
-
-            planetMesh.position.x = pData.dist; // Quyoshdan masofasi
-            
-            // Quyosh alohida
-            if (pData.name === "Quyosh") {
-                const sunMaterial = new THREE.MeshBasicMaterial({ map: pData.textureMap });
-                const sunMesh = new THREE.Mesh(planetGeometry, sunMaterial);
-                scene.add(sunMesh);
-                sunLight.position.copy(sunMesh.position); // Yorug'lik Quyosh bilan bir joyda
-                sunMesh.userData = { ...pData };
-                solarSystemObjects.push({ mesh: sunMesh, pivot: sunMesh, data: pData }); // Quyoshning o'zida aylanishi uchun
-                interactiveMeshes.push(sunMesh);
-            } else if (pData.parent) { // Oy uchun
-                const parentPlanet = solarSystemObjects.find(obj => obj.data.name === pData.parent);
-                if (parentPlanet) {
-                    parentPlanet.mesh.add(planetPivot); // Oy Yerni aylanadi
-                    planetMesh.position.x = pData.dist / DISTANCE_SCALE_FACTOR * 3; // Oyni Yerdan uzoqroq qilish
-                }
-                planetMesh.userData = { ...pData };
-                solarSystemObjects.push({ mesh: planetMesh, pivot: planetPivot, data: pData });
-                interactiveMeshes.push(planetMesh);
-            } else { // Boshqa sayyoralar
-                scene.add(planetPivot);
-                planetMesh.userData = { ...pData };
-                solarSystemObjects.push({ mesh: planetMesh, pivot: planetPivot, data: pData });
-                interactiveMeshes.push(planetMesh);
-            }
-
-            // Saturn halqalari
-            if (pData.name === "Saturn" && pData.ringTexture) {
-                const ringGeometry = new THREE.RingGeometry(pData.radius * 1.2, pData.radius * 2.2, 64);
-                const ringMaterial = new THREE.MeshBasicMaterial({
-                    map: pData.ringTexture,
-                    side: THREE.DoubleSide,
-                    transparent: true,
-                    opacity: 0.8
-                });
-                const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
-                ringMesh.rotation.x = Math.PI / 2 - 0.1; // Halqani biroz egish
-                planetMesh.add(ringMesh);
-            }
-
-            // Har bir sayyora uchun HTML yorliq
-            const labelDiv = document.createElement('div');
-            labelDiv.className = 'planet-label';
-            labelDiv.textContent = pData.name;
-            document.body.appendChild(labelDiv);
-            pData.labelDiv = labelDiv; // Keyinroq joylashish uchun saqlaymiz
-        });
-
-        // --- ORBIT CONTROLS ---
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false; // Gorizontal harakatni o'chirish
-        controls.maxDistance = 1500 * DISTANCE_SCALE_FACTOR;
-        controls.minDistance = 15 * PLANET_SCALE_FACTOR;
-        controls.target.set(0, 0, 0); // Markazga qaratilgan
-
-        // --- INTERAKTIVLIK (CLICK & HOVER) ---
+        const planetMeshes = [];
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
-        let hoveredObject = null;
-        let selectedObject = null;
 
-        // Sayyora ustiga sichqoncha kelganda
-        renderer.domElement.addEventListener('mousemove', (event) => {
-            if (document.getElementById('info-box').classList.contains('active')) return; // Ma'lumot oynasi ochiq bo'lsa, hoverni o'chiradi
+        // 5. Obyektlarni yaratish
+        planets.forEach(p => {
+            const mesh = new THREE.Mesh(
+                new THREE.SphereGeometry(p.size, 32, 32),
+                new THREE.MeshStandardMaterial({ 
+                    color: p.color, 
+                    emissive: p.name === "Quyosh" ? p.color : 0x000000,
+                    emissiveIntensity: p.name === "Quyosh" ? 1 : 0
+                })
+            );
             
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
+            const pivot = new THREE.Object3D(); // Orbitadagi aylanma nuqtasi
+            scene.add(pivot);
+            pivot.add(mesh);
+            mesh.position.x = p.dist;
+            
+            mesh.userData = { name: p.name, info: p.info };
+            planetMeshes.push({ mesh, pivot, speed: p.speed });
 
-            const intersects = raycaster.intersectObjects(interactiveMeshes);
-
-            if (intersects.length > 0) {
-                if (hoveredObject !== intersects[0].object) {
-                    if (hoveredObject) {
-                        // Oldingi hoverni tozalash
-                        document.body.style.cursor = 'default';
-                        // hoveredObject.material.emissive.setHex(hoveredObject.currentEmissive || 0x000000); // Emissive color'ni qaytarish
-                        // if(hoveredObject.labelDiv) hoveredObject.labelDiv.classList.remove('visible');
-                    }
-                    hoveredObject = intersects[0].object;
-                    document.body.style.cursor = 'pointer';
-                    // hoveredObject.currentEmissive = hoveredObject.material.emissive.getHex();
-                    // hoveredObject.material.emissive.setHex(0x333333); // Yorqinlashadi
-                    // if(hoveredObject.userData.labelDiv) hoveredObject.userData.labelDiv.classList.add('visible');
-                }
-            } else {
-                if (hoveredObject) {
-                    document.body.style.cursor = 'default';
-                    // hoveredObject.material.emissive.setHex(hoveredObject.currentEmissive || 0x000000);
-                    // if(hoveredObject.userData.labelDiv) hoveredObject.userData.labelDiv.classList.remove('visible');
-                }
-                hoveredObject = null;
+            // Saturn halqasi
+            if(p.name === "Saturn") {
+                const ring = new THREE.Mesh(
+                    new THREE.RingGeometry(p.size * 1.3, p.size * 2, 64),
+                    new THREE.MeshBasicMaterial({ color: 0x999999, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
+                );
+                ring.rotation.x = Math.PI / 2;
+                mesh.add(ring);
             }
         });
 
-        // Sayyorani bosganda
-        renderer.domElement.addEventListener('mousedown', (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        // 6. Nazorat va Interaktivlik
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        window.addEventListener('click', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
-
-            const intersects = raycaster.intersectObjects(interactiveMeshes);
-
+            
+            const intersects = raycaster.intersectObjects(planetMeshes.map(pm => pm.mesh));
             if (intersects.length > 0) {
-                const clickedPlanet = intersects[0].object;
-                
-                // Oldingi tanlangan obyektni tozalash
-                if (selectedObject && selectedObject !== clickedPlanet) {
-                    selectedObject.element.classList.remove('focused');
-                }
+                const data = intersects[0].object.userData;
+                const infoBox = document.getElementById('info-box');
+                infoBox.style.display = 'block';
+                document.getElementById('p-name').innerText = data.name;
+                document.getElementById('p-info').innerText = data.info;
+            } else {
+                document.getElementById('info-box').style.display = 'none';
+            }
+        });
 
-                // Ma'lumot oynasini ochish
-                document.getElementById('p-name').innerText = clickedPlanet.userData.name;
-                document.getElementById('p-info').innerText = clickedPlanet.userData.info;
-                document.getElementById('info-box').classList.add('active');
-                
-                // Kamerani tanlangan sayyoraga fokuslash (silliq harakat bilan)
-                const targetPosition = new THREE.Vector3();
-                clickedPlanet.getWorldPosition(targetPosition);
-                controls.target.copy(targetPosition);
-                // controls.update(); // Keyingi frame'da fokuslanadi
+        // 7. Animatsiya
+        function animate() {
+            requestAnimationFrame(animate);
+            planetMeshes.forEach(p => {
+                p.pivot.rotation.y += p.speed; // Orbitada aylanish
+                p.mesh.rotation.y += 0.01;      // O'z o'qi atrofida
+            });
+            controls.update();
+            renderer.render(scene, camera);
+        }
 
-                selectedObject = { element: document.getElementById('info-box'), mesh: clickedPlanet };
-                selectedObject.element.classList.add('fo
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
