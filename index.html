@@ -2,22 +2,42 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Mening 3D Saytim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Quyosh Tizimi</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; }
+        body { margin: 0; overflow: hidden; background: #000; color: white; font-family: 'Segoe UI', sans-serif; }
         canvas { display: block; }
-        .info {
-            position: absolute; top: 20px; left: 20px;
-            color: white; font-family: sans-serif;
+
+        .overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: sans-serif;
             pointer-events: none;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        h1 { margin: 0; }
+        p { font-size: 0.9rem; opacity: 0.8; }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
-    <div class="info">
-        <h1>3D Interaktiv Sahifa</h1>
-        <p>Sichqoncha bilan aylantiring</p>
+
+    <div class="overlay">
+        <h1>Quyosh Tizimi</h1>
+        <p>Sichqoncha bilan boshqaring. Sayyoralarni aylantiring!</p>
     </div>
+
+    <div class="footer">3D Quyosh Tizimi Modeli</div>
 
     <script type="importmap">
         {
@@ -32,34 +52,89 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // 1. Sahna (Scene)
+        // 1. Sahna, Kamera, Renderer sozlamalari
         const scene = new THREE.Scene();
-        
-        // 2. Kamera
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
+        camera.position.set(0, 10, 20); // Kamerani biroz uzoqroq qo'yamiz
 
-        // 3. Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(renderer.domElement);
 
-        // 4. 3D shakl (TorusKnot)
-        const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-        const material = new THREE.MeshNormalMaterial(); // Rangli material
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+        // 2. Orqa fon (Yulduzlar)
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 10000;
+        const posArray = new Float32Array(starsCount * 3);
+        for(let i = 0; i < starsCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 200; // Kattaroq maydonda yulduzlar
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const starsMaterial = new THREE.PointsMaterial({ size: 0.1, color: 0xffffff });
+        const starsMesh = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(starsMesh);
 
-        // 5. Boshqaruv (Sichqoncha bilan aylantirish)
+        // 3. Quyosh
+        const sunGeometry = new THREE.SphereGeometry(2, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 }); // Sariq rang
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Quyosh yorug'ligi
+        const pointLight = new THREE.PointLight(0xffffff, 1000, 100); // Rangi, intensivligi, masofasi
+        scene.add(pointLight);
+
+        // 4. Sayyoralar yaratish funksiyasi
+        function createPlanet(size, textureColor, orbitalRadius, orbitalSpeed, rotationSpeed) {
+            const geometry = new THREE.SphereGeometry(size, 32, 32);
+            const material = new THREE.MeshStandardMaterial({ color: textureColor });
+            const planet = new THREE.Mesh(geometry, material);
+
+            const planetObject = new THREE.Object3D(); // Sayyorani aylantirish uchun guruh
+            planetObject.add(planet);
+            scene.add(planetObject);
+
+            planet.position.x = orbitalRadius; // Quyoshdan masofasi
+
+            return { planetObject, planet, orbitalRadius, orbitalSpeed, rotationSpeed };
+        }
+
+        // Sayyoralarni qo'shish (hajmi, rangi, orbital masofasi, orbital tezligi, o'z o'qi atrofida aylanish tezligi)
+        const planets = [
+            createPlanet(0.3, 0xaaaaaa, 3, 0.04, 0.02), // Merkuriy
+            createPlanet(0.6, 0xff8800, 4.5, 0.03, 0.01), // Venera
+            createPlanet(0.7, 0x0000ff, 6, 0.02, 0.015),  // Yer
+            createPlanet(0.5, 0xff0000, 8, 0.015, 0.025), // Mars
+            createPlanet(1.5, 0xffcc00, 12, 0.01, 0.008), // Yupiter
+            createPlanet(1.2, 0xdddd99, 16, 0.008, 0.007), // Saturn
+            createPlanet(1.0, 0x88ccff, 20, 0.006, 0.006), // Uran
+            createPlanet(1.0, 0x0088ff, 24, 0.005, 0.005)  // Neptun
+        ];
+
+        // 5. Orbit Controls (Sichqoncha bilan boshqarish)
         const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Silliq harakat
+        controls.target.set(0, 0, 0); // Markazga qaratilgan
 
-        // 6. Animatsiya funksiyasi
+        // 6. Animatsiya sikli
+        const clock = new THREE.Clock();
+
         function animate() {
             requestAnimationFrame(animate);
-            mesh.rotation.y += 0.01;
+
+            const delta = clock.getDelta();
+
+            // Sayyoralarni harakatlantirish
+            planets.forEach(p => {
+                p.planetObject.rotation.y += p.orbitalSpeed * delta * 50; // Quyosh atrofida aylanish
+                p.planet.rotation.y += p.rotationSpeed * delta * 50; // O'z o'qi atrofida aylanish
+            });
+
+            controls.update();
             renderer.render(scene, camera);
         }
 
+        // Oynani o'lchami o'zgarganda kamerani moslashtirish
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
