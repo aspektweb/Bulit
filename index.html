@@ -2,187 +2,204 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cheksiz Galaktika va Quyosh Tizimi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Perfect Circle - Mening Loyiham</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #000; color: white; font-family: 'Segoe UI', sans-serif; }
-        canvas { display: block; }
-
-        #info-box {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            width: 280px;
-            padding: 20px;
-            background: rgba(0, 5, 15, 0.9);
-            border-left: 4px solid #00d4ff;
-            border-radius: 0 10px 10px 0;
-            display: none;
-            backdrop-filter: blur(8px);
-            z-index: 100;
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
         }
 
-        #p-name { font-size: 1.5rem; color: #00d4ff; margin-bottom: 5px; text-transform: uppercase; }
-        #p-info { font-size: 0.95rem; line-height: 1.4; opacity: 0.8; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            touch-action: none; /* Mobil qurilmalarda ekranni surilib ketishidan himoyalaydi */
+        }
+
+        #ui {
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        h1 { font-weight: 300; margin-bottom: 5px; letter-spacing: 2px; }
+
+        .stats {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: auto;
+        }
+
+        button {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        canvas {
+            display: block;
+            touch-action: none;
+        }
+
+        .hint { font-size: 0.9rem; opacity: 0.6; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="info-box">
-        <div id="p-name"></div>
-        <div id="p-info"></div>
+    <div id="ui">
+        <h1>MUKAMMAL AYLANA</h1>
+        <div class="stats"><span id="score">0.0</span>%</div>
+        <div class="hint">Markaz atrofida aylana chizing</div>
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
+    <canvas id="canvas"></canvas>
+
+    <div class="controls">
+        <button onclick="resetCanvas()">QAYTA BOSHLASH</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+
+        let drawing = false;
+        let points = [];
+        let centerX, centerY;
+
+        // Ekran o'lchamiga moslash
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            centerX = canvas.width / 2;
+            centerY = canvas.height / 2;
+            drawCenterDot();
         }
-    </script>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
-        camera.position.set(50, 80, 150);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.body.appendChild(renderer.domElement);
-
-        // 1. CHEKSIZ GALAKTIKA (Yulduzlar tumanligi)
-        function createGalaxy() {
-            const starsCount = 25000;
-            const positions = new Float32Array(starsCount * 3);
-            const colors = new Float32Array(starsCount * 3);
-
-            for (let i = 0; i < starsCount; i++) {
-                const i3 = i * 3;
-                const radius = Math.random() * 1000;
-                const spinAngle = radius * 0.1;
-                const branchAngle = (i % 3) * ((Math.PI * 2) / 3);
-
-                const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 50;
-                const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 50;
-                const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 50;
-
-                positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
-                positions[i3 + 1] = randomY;
-                positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
-
-                // Yulduz ranglari (ko'k va pushti aralash)
-                const mixedColor = new THREE.Color();
-                mixedColor.lerpColors(new THREE.Color('#1b3984'), new THREE.Color('#ff61d2'), Math.random());
-                colors[i3] = mixedColor.r;
-                colors[i3 + 1] = mixedColor.g;
-                colors[i3 + 2] = mixedColor.b;
-            }
-
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.8,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.8,
-                blending: THREE.AdditiveBlending
-            });
-
-            return new THREE.Points(geometry, material);
+        function drawCenterDot() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fill();
         }
-        const galaxy = createGalaxy();
-        scene.add(galaxy);
 
-        // 2. QUYOSH VA SAYYORALAR
-        const sunGeo = new THREE.SphereGeometry(10, 32, 32);
-        const sunMat = new THREE.MeshBasicMaterial({ color: 0xffdd00 });
-        const sun = new THREE.Mesh(sunGeo, sunMat);
-        scene.add(sun);
+        window.addEventListener('resize', resize);
+        resize();
 
-        const pointLight = new THREE.PointLight(0xffffff, 5000, 1000);
-        scene.add(pointLight);
-
-        const planets = [
-            { name: "Merkuriy", size: 1.2, dist: 30, speed: 0.02, color: 0x888888, info: "Eng kichik va tezkor sayyora." },
-            { name: "Venera", size: 2.3, dist: 45, speed: 0.015, color: 0xe3bb76, info: "Quyosh tizimidagi eng issiq sayyora." },
-            { name: "Yer", size: 2.5, dist: 65, speed: 0.01, color: 0x2277ff, info: "Hayot mavjud bo'lgan moviy sayyora." },
-            { name: "Mars", size: 1.6, dist: 85, speed: 0.008, color: 0xff4422, info: "Insoniyat qadami yetishi kutilayotgan qizil nuqta." },
-            { name: "Yupiter", size: 6.5, dist: 120, speed: 0.004, color: 0xffa500, info: "Eng ulkan gaz giganti." },
-            { name: "Saturn", size: 5.5, dist: 160, speed: 0.003, color: 0xdfd195, info: "Muz va changdan iborat halqalari bor." }
-        ];
-
-        const planetMeshes = [];
-        planets.forEach(p => {
-            const mesh = new THREE.Mesh(
-                new THREE.SphereGeometry(p.size, 32, 32),
-                new THREE.MeshStandardMaterial({ color: p.color, roughness: 0.6 })
-            );
-            const pivot = new THREE.Object3D();
-            scene.add(pivot);
-            pivot.add(mesh);
-            mesh.position.x = p.dist;
-            mesh.userData = p;
-            planetMeshes.push({ mesh, pivot, speed: p.speed });
-
-            if(p.name === "Saturn") {
-                const ring = new THREE.Mesh(
-                    new THREE.RingGeometry(p.size * 1.4, p.size * 2.2, 64),
-                    new THREE.MeshBasicMaterial({ color: 0x888888, side: THREE.DoubleSide, transparent: true, opacity: 0.4 })
-                );
-                ring.rotation.x = Math.PI / 2;
-                mesh.add(ring);
-            }
-        });
-
-        // 3. INTERAKTIVLIK
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-
-        window.addEventListener('click', (e) => {
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(planetMeshes.map(m => m.mesh));
+        // Chizish funksiyalari (Sichqoncha va Touch uchun)
+        function start(e) {
+            drawing = true;
+            points = [];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCenterDot();
             
-            const infoBox = document.getElementById('info-box');
-            if(intersects.length > 0) {
-                const data = intersects[0].object.userData;
-                infoBox.style.display = 'block';
-                document.getElementById('p-name').innerText = data.name;
-                document.getElementById('p-info').innerText = data.info;
-            } else {
-                infoBox.style.display = 'none';
-            }
-        });
-
-        // 4. ANIMATSIYA
-        function animate() {
-            requestAnimationFrame(animate);
-            galaxy.rotation.y += 0.0002; // Galaktika sekin aylanadi
-            planetMeshes.forEach(p => {
-                p.pivot.rotation.y += p.speed;
-                p.mesh.rotation.y += 0.01;
-            });
-            controls.update();
-            renderer.render(scene, camera);
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
         }
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        function move(e) {
+            if (!drawing) return;
+            const pos = getPos(e);
+            points.push(pos);
 
-        animate();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineCap = 'round';
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function end() {
+            if (!drawing) return;
+            drawing = false;
+            calculateScore();
+        }
+
+        function getPos(e) {
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX, y: clientY };
+        }
+
+        // Voqealarni tinglash
+        canvas.addEventListener('mousedown', start);
+        canvas.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', end);
+
+        canvas.addEventListener('touchstart', start);
+        canvas.addEventListener('touchmove', move);
+        window.addEventListener('touchend', end);
+
+        function calculateScore() {
+            if (points.length < 20) return;
+
+            // Har bir nuqtaning markazdan masofasini o'lchash
+            let radii = points.map(p => {
+                return Math.sqrt(Math.pow(p.x - centerX, 2) + Math.pow(p.y - centerY, 2));
+            });
+
+            const avgRadius = radii.reduce((a, b) => a + b) / radii.length;
+            
+            // O'rtacha radiusdan og'ish (deviation)
+            let totalDeviation = 0;
+            radii.forEach(r => {
+                totalDeviation += Math.abs(r - avgRadius);
+            });
+
+            const meanDeviation = totalDeviation / points.length;
+            
+            // Foizni hisoblash (formula biroz qat'iyroq qilingan)
+            let score = 100 - (meanDeviation / avgRadius * 150);
+            
+            // Shaklning yopiqligini tekshirish (boshlang'ich va oxirgi nuqta masofasi)
+            const startPoint = points[0];
+            const endPoint = points[points.length - 1];
+            const gap = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2));
+            if (gap > avgRadius * 0.5) score -= 20; // Agar aylana yopilmasa jarima
+
+            score = Math.max(0, Math.min(100, score));
+            scoreEl.innerText = score.toFixed(1);
+            
+            // Effektlar
+            if (score > 90) scoreEl.style.color = "#4ade80"; 
+            else if (score > 70) scoreEl.style.color = "#fbbf24";
+            else scoreEl.style.color = "#f87171";
+        }
+
+        function resetCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCenterDot();
+            scoreEl.innerText = "0.0";
+            scoreEl.style.color = "var(--accent-color)";
+        }
     </script>
 </body>
 </html>
