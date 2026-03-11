@@ -2,204 +2,152 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Perfect Circle - Mening Loyiham</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolajonlar uchun rasm doskasi</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --text-color: #f8fafc;
-            --accent-color: #38bdf8;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            touch-action: none; /* Mobil qurilmalarda ekranni surilib ketishidan himoyalaydi */
-        }
-
-        #ui {
-            position: absolute;
-            top: 5%;
-            width: 100%;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             text-align: center;
-            pointer-events: none;
-            z-index: 10;
+            background-color: #f0f8ff;
+            margin: 0;
+            overflow: hidden;
         }
-
-        h1 { font-weight: 300; margin-bottom: 5px; letter-spacing: 2px; }
-
-        .stats {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        h1 { color: #ff4500; margin: 10px; }
+        .toolbar {
+            background: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        .controls {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            pointer-events: auto;
-        }
-
-        button {
-            background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 10px 25px;
-            font-size: 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: var(--accent-color);
-            color: var(--bg-color);
-        }
-
         canvas {
-            display: block;
+            background: white;
+            cursor: crosshair;
+            margin-top: 10px;
+            border: 5px solid #ffcc00;
+            border-radius: 15px;
             touch-action: none;
         }
-
-        .hint { font-size: 0.9rem; opacity: 0.6; margin-top: 10px; }
+        .btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .clear-btn { background-color: #ff6347; color: white; }
+        .save-btn { background-color: #32cd32; color: white; }
+        .color-picker { width: 50px; height: 50px; border: none; cursor: pointer; }
+        
+        /* Baholash qismi */
+        #grade-area {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #4b0082;
+            height: 40px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        <h1>MUKAMMAL AYLANA</h1>
-        <div class="stats"><span id="score">0.0</span>%</div>
-        <div class="hint">Markaz atrofida aylana chizing</div>
+    <h1>🎨 Mening Sehrli Doskam 🖌️</h1>
+
+    <div class="toolbar">
+        <input type="color" id="colorPicker" class="color-picker" value="#000000">
+        <button class="btn" style="background: #ddd;" onclick="useEraser()">🧽 O'chirg'ich</button>
+        <button class="btn clear-btn" onclick="clearCanvas()">🗑️ Tozalash</button>
+        <button class="btn save-btn" onclick="giveGrade()">🌟 Baholash</button>
     </div>
 
-    <canvas id="canvas"></canvas>
-
-    <div class="controls">
-        <button onclick="resetCanvas()">QAYTA BOSHLASH</button>
-    </div>
+    <div id="grade-area"></div>
+    <canvas id="paintCanvas"></canvas>
 
     <script>
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('paintCanvas');
         const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
+        const colorPicker = document.getElementById('colorPicker');
+        const gradeArea = document.getElementById('gradeArea');
 
-        let drawing = false;
-        let points = [];
-        let centerX, centerY;
+        // Canvas hajmini ekranga moslash
+        canvas.width = window.innerWidth - 40;
+        canvas.height = window.innerHeight - 250;
 
-        // Ekran o'lchamiga moslash
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            centerX = canvas.width / 2;
-            centerY = canvas.height / 2;
-            drawCenterDot();
+        let painting = false;
+        let color = "#000000";
+        let lineWidth = 8;
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
         }
 
-        function drawCenterDot() {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        function finishedPosition() {
+            painting = false;
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
-            ctx.fill();
         }
 
-        window.addEventListener('resize', resize);
-        resize();
-
-        // Chizish funksiyalari (Sichqoncha va Touch uchun)
-        function start(e) {
-            drawing = true;
-            points = [];
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawCenterDot();
+        function draw(e) {
+            if (!painting) return;
             
-            const pos = getPos(e);
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-        }
-
-        function move(e) {
-            if (!drawing) return;
-            const pos = getPos(e);
-            points.push(pos);
-
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = lineWidth;
             ctx.lineCap = 'round';
-            ctx.lineTo(pos.x, pos.y);
+            ctx.strokeStyle = color;
+
+            // Sichqoncha yoki sensorli ekran koordinatalari
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            ctx.lineTo(x, y);
             ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
         }
 
-        function end() {
-            if (!drawing) return;
-            drawing = false;
-            calculateScore();
+        // Rang tanlash
+        colorPicker.addEventListener('input', (e) => {
+            color = e.target.value;
+            lineWidth = 8;
+        });
+
+        // O'chirg'ich funksiyasi
+        function useEraser() {
+            color = "#ffffff";
+            lineWidth = 30;
         }
 
-        function getPos(e) {
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX, y: clientY };
-        }
-
-        // Voqealarni tinglash
-        canvas.addEventListener('mousedown', start);
-        canvas.addEventListener('mousemove', move);
-        window.addEventListener('mouseup', end);
-
-        canvas.addEventListener('touchstart', start);
-        canvas.addEventListener('touchmove', move);
-        window.addEventListener('touchend', end);
-
-        function calculateScore() {
-            if (points.length < 20) return;
-
-            // Har bir nuqtaning markazdan masofasini o'lchash
-            let radii = points.map(p => {
-                return Math.sqrt(Math.pow(p.x - centerX, 2) + Math.pow(p.y - centerY, 2));
-            });
-
-            const avgRadius = radii.reduce((a, b) => a + b) / radii.length;
-            
-            // O'rtacha radiusdan og'ish (deviation)
-            let totalDeviation = 0;
-            radii.forEach(r => {
-                totalDeviation += Math.abs(r - avgRadius);
-            });
-
-            const meanDeviation = totalDeviation / points.length;
-            
-            // Foizni hisoblash (formula biroz qat'iyroq qilingan)
-            let score = 100 - (meanDeviation / avgRadius * 150);
-            
-            // Shaklning yopiqligini tekshirish (boshlang'ich va oxirgi nuqta masofasi)
-            const startPoint = points[0];
-            const endPoint = points[points.length - 1];
-            const gap = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2));
-            if (gap > avgRadius * 0.5) score -= 20; // Agar aylana yopilmasa jarima
-
-            score = Math.max(0, Math.min(100, score));
-            scoreEl.innerText = score.toFixed(1);
-            
-            // Effektlar
-            if (score > 90) scoreEl.style.color = "#4ade80"; 
-            else if (score > 70) scoreEl.style.color = "#fbbf24";
-            else scoreEl.style.color = "#f87171";
-        }
-
-        function resetCanvas() {
+        // Tozalash
+        function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawCenterDot();
-            scoreEl.innerText = "0.0";
-            scoreEl.style.color = "var(--accent-color)";
+            document.getElementById('grade-area').innerText = "";
         }
+
+        // Baholash funksiyasi (Bolalar uchun qiziqarli stikerlar bilan)
+        function giveGrade() {
+            const grades = [
+                "Ajoyib! 🌟", 
+                "Siz haqiqiy rassomsiz! 🎨", 
+                "Barakalla! 👍", 
+                "Juda chiroyli chiqdi! ❤️", 
+                "Super! 🚀"
+            ];
+            const randomGrade = grades[Math.floor(Math.random() * grades.length)];
+            document.getElementById('grade-area').innerText = randomGrade;
+        }
+
+        // Event listenerlar
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', finishedPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        // Sensorli ekranlar uchun (Planshet va telefon)
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); });
+        canvas.addEventListener('touchend', finishedPosition);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
     </script>
 </body>
 </html>
