@@ -1,0 +1,5 @@
+kids-drawing-game
+│
+├── index.html
+├── style.css
+└── script.js
