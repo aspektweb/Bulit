@@ -1,46 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="uz">
 <head>
-<meta charset="UTF-8">
-<title>Kids Drawing Game</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Magic Board for Kids</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SweetAlert2 for the grading modal -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f0f8ff;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    canvas {
+      flex: 1;
+      border: 2px solid #ddd;
+      background: #fff;
+      touch-action: none;               /* prevent scrolling while drawing */
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.5rem;
+      background: #ffefd5;
+    }
+    .color-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: none;
+      margin: 0 4px;
+    }
+    #sizeSlider {
+      width: 120px;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #ffcc00;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background:#ffbb00; }
+  </style>
 </head>
-
 <body>
+  <canvas id="board"></canvas>
 
-<div class="startScreen">
-<h1>🎨 Drawing Game</h1>
-<p>Draw something nice!</p>
+  <div class="toolbar">
+    <!-- Color palette -->
+    <div id="palette">
+      <button class="color-btn" style="background:#ff5733;" data-color="#ff5733"></button>
+      <button class="color-btn" style="background:#33c1ff;" data-color="#33c1ff"></button>
+      <button class="color-btn" style="background:#8aff33;" data-color="#8aff33"></button>
+      <button class="color-btn" style="background:#ff33a6;" data-color="#ff33a6"></button>
+    </div>
 
-<button onclick="startGame()">Start Game</button>
-</div>
+    <!-- Brush size -->
+    <input type="range" id="sizeSlider" min="2" max="30" value="8">
 
-<div id="game" class="hidden">
+    <!-- Action buttons -->
+    <button id="gradeBtn">Check/Grade</button>
+    <a id="saveBtn" href="#" download="my_drawing.png">Save</a>
+    <button id="clearBtn">Clear</button>
+  </div>
 
-<h2>Choose what to draw</h2>
+  <script>
+    // ----- Canvas setup -----
+    const canvas = document.getElementById('board');
+    const ctx = canvas.getContext('2d');
 
-<button onclick="task('House')">🏠 House</button>
-<button onclick="task('Tree')">🌳 Tree</button>
-<button onclick="task('Sun')">☀️ Sun</button>
+    // Resize canvas to fill the viewport (minus toolbar)
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - document.querySelector('.toolbar').offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-<h3 id="task"></h3>
+    // Smooth ink‑like strokes
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#ff5733';   // default color
+    ctx.lineWidth = 8;             // default thickness
 
-<canvas id="canvas" width="800" height="500"></canvas>
+    // ----- Drawing with pointer events (touch‑friendly) -----
+    let drawing = false;
+    canvas.addEventListener('pointerdown', e => {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    });
+    canvas.addEventListener('pointermove', e => {
+      if (!drawing) return;
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+    });
+    canvas.addEventListener('pointerup',   () => drawing = false);
+    canvas.addEventListener('pointerout', () => drawing = false);
 
-<div class="tools">
+    // ----- Brush size slider -----
+    const sizeSlider = document.getElementById('sizeSlider');
+    sizeSlider.addEventListener('input', e => {
+      ctx.lineWidth = e.target.value;
+    });
 
-<button onclick="setColor('red')">Red</button>
-<button onclick="setColor('blue')">Blue</button>
-<button onclick="setColor('green')">Green</button>
+    // ----- Color palette -----
+    document.getElementById('palette').addEventListener('click', e => {
+      if (e.target.dataset.color) {
+        ctx.strokeStyle = e.target.dataset.color;
+      }
+    });
 
-<button onclick="clearCanvas()">Clear</button>
-<button onclick="saveImage()">Finish</button>
+    // ----- Clear button -----
+    document.getElementById('clearBtn').onclick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
 
-</div>
+    // ----- Save as PNG -----
+    document.getElementById('saveBtn').addEventListener('click', e => {
+      e.preventDefault();
+      const dataURL = canvas.toDataURL('image/png');
+      e.target.href = dataURL;
+    });
 
-</div>
-
-<script src="script.js"></script>
-
+    // ----- Teacher’s Review (grade modal) -----
+    function showGrade() {
+      const stars = Math.floor(Math.random() * 5) + 1; // 1‑5 stars
+      const phrases = [
+        "You’re a little Picasso!",
+        "Great imagination!",
+        "Your colors are wonderful!",
+        "Super creative work!",
+        "Amazing effort!"
+      ];
+      const msg = phrases[Math.floor(Math.random() * phrases.length)];
+      Swal.fire({
+        title: `⭐ ${'⭐'.repeat(stars)}`,
+        html: `<p>${msg}</p>`,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    }
+    document.getElementById('gradeBtn').addEventListener('click', showGrade);
+  </script>
 </body>
 </html>
