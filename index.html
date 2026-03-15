@@ -1,154 +1,135 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <title>Magic Board for Kids</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- SweetAlert2 for the grading modal -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: #f0f8ff;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-    canvas {
-      flex: 1;
-      border: 2px solid #ddd;
-      background: #fff;
-      touch-action: none;               /* prevent scrolling while drawing */
-    }
-    .toolbar {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0.5rem;
-      background: #ffefd5;
-    }
-    .color-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      border: none;
-      margin: 0 4px;
-    }
-    #sizeSlider {
-      width: 120px;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      background: #ffcc00;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover { background:#ffbb00; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvadrat O'yini</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #222; font-family: sans-serif; }
+        canvas { display: block; background: #111; }
+        #ui {
+            position: absolute; top: 10px; left: 10px;
+            color: white; font-size: 18px; pointer-events: none;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="board"></canvas>
 
-  <div class="toolbar">
-    <!-- Color palette -->
-    <div id="palette">
-      <button class="color-btn" style="background:#ff5733;" data-color="#ff5733"></button>
-      <button class="color-btn" style="background:#33c1ff;" data-color="#33c1ff"></button>
-      <button class="color-btn" style="background:#8aff33;" data-color="#8aff33"></button>
-      <button class="color-btn" style="background:#ff33a6;" data-color="#ff33a6"></button>
+    <div id="ui">
+        Vaqt: <span id="time">0</span>s <br>
+        Dushmanlar soni: <span id="enemyCount">0</span> <br>
+        Tezlik: <span id="speed">2.0</span>
     </div>
 
-    <!-- Brush size -->
-    <input type="range" id="sizeSlider" min="2" max="30" value="8">
+    <canvas id="gameCanvas"></canvas>
 
-    <!-- Action buttons -->
-    <button id="gradeBtn">Check/Grade</button>
-    <a id="saveBtn" href="#" download="my_drawing.png">Save</a>
-    <button id="clearBtn">Clear</button>
-  </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-  <script>
-    // ----- Canvas setup -----
-    const canvas = document.getElementById('board');
-    const ctx = canvas.getContext('2d');
+        // UI elementlari
+        const timeEl = document.getElementById("time");
+        const enemyCountEl = document.getElementById("enemyCount");
+        const speedEl = document.getElementById("speed");
 
-    // Resize canvas to fill the viewport (minus toolbar)
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight - document.querySelector('.toolbar').offsetHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    // Smooth ink‑like strokes
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#ff5733';   // default color
-    ctx.lineWidth = 8;             // default thickness
+        let score = 0;
+        let startTime = Date.now();
+        let gameOver = false;
 
-    // ----- Drawing with pointer events (touch‑friendly) -----
-    let drawing = false;
-    canvas.addEventListener('pointerdown', e => {
-      drawing = true;
-      ctx.beginPath();
-      ctx.moveTo(e.offsetX, e.offsetY);
-    });
-    canvas.addEventListener('pointermove', e => {
-      if (!drawing) return;
-      ctx.lineTo(e.offsetX, e.offsetY);
-      ctx.stroke();
-    });
-    canvas.addEventListener('pointerup',   () => drawing = false);
-    canvas.addEventListener('pointerout', () => drawing = false);
+        // O'yinchi obyekti (Ko'k kvadrat)
+        const player = {
+            x: canvas.width / 2,
+            y: canvas.height - 50,
+            size: 20,
+            color: "#00ffff",
+            speed: 7
+        };
 
-    // ----- Brush size slider -----
-    const sizeSlider = document.getElementById('sizeSlider');
-    sizeSlider.addEventListener('input', e => {
-      ctx.lineWidth = e.target.value;
-    });
+        // Dushmanlar massivi
+        const enemies = [];
+        let enemyBaseSpeed = 2;
 
-    // ----- Color palette -----
-    document.getElementById('palette').addEventListener('click', e => {
-      if (e.target.dataset.color) {
-        ctx.strokeStyle = e.target.dataset.color;
-      }
-    });
+        // Klaviatura boshqaruvi
+        const keys = {};
+        window.addEventListener("keydown", (e) => keys[e.code] = true);
+        window.addEventListener("keyup", (e) => keys[e.code] = false);
 
-    // ----- Clear button -----
-    document.getElementById('clearBtn').onclick = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    };
+        function createEnemy() {
+            const size = 20;
+            enemies.push({
+                x: Math.random() * (canvas.width - size),
+                y: -size,
+                size: size,
+                speed: enemyBaseSpeed + Math.random() * 2,
+                color: "#ff3333"
+            });
+        }
 
-    // ----- Save as PNG -----
-    document.getElementById('saveBtn').addEventListener('click', e => {
-      e.preventDefault();
-      const dataURL = canvas.toDataURL('image/png');
-      e.target.href = dataURL;
-    });
+        function update() {
+            if (gameOver) return;
 
-    // ----- Teacher’s Review (grade modal) -----
-    function showGrade() {
-      const stars = Math.floor(Math.random() * 5) + 1; // 1‑5 stars
-      const phrases = [
-        "You’re a little Picasso!",
-        "Great imagination!",
-        "Your colors are wonderful!",
-        "Super creative work!",
-        "Amazing effort!"
-      ];
-      const msg = phrases[Math.floor(Math.random() * phrases.length)];
-      Swal.fire({
-        title: `⭐ ${'⭐'.repeat(stars)}`,
-        html: `<p>${msg}</p>`,
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
-    }
-    document.getElementById('gradeBtn').addEventListener('click', showGrade);
-  </script>
+            // Vaqtni hisoblash
+            let elapsed = Math.floor((Date.now() - startTime) / 1000);
+            timeEl.innerText = elapsed;
+            
+            // Dushmanlar tezligini vaqt o'tishi bilan oshirish
+            enemyBaseSpeed = 2 + (elapsed / 10);
+            speedEl.innerText = enemyBaseSpeed.toFixed(1);
+
+            // O'yinchi harakati
+            if (keys["ArrowLeft"] && player.x > 0) player.x -= player.speed;
+            if (keys["ArrowRight"] && player.x < canvas.width - player.size) player.x += player.speed;
+            if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
+            if (keys["ArrowDown"] && player.y < canvas.height - player.size) player.y += player.size;
+
+            // Dushmanlarni yangilash
+            if (Math.random() < 0.05) createEnemy();
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                enemies[i].y += enemies[i].speed;
+
+                // To'qnashuvni tekshirish
+                if (
+                    player.x < enemies[i].x + enemies[i].size &&
+                    player.x + player.size > enemies[i].x &&
+                    player.y < enemies[i].y + enemies[i].size &&
+                    player.y + player.size > enemies[i].y
+                ) {
+                    gameOver = true;
+                    alert("O'yin tugadi! Siz " + elapsed + " soniya chidadingiz.");
+                    location.reload();
+                }
+
+                // Ekranda chiqib ketgan dushmanlarni o'chirish
+                if (enemies[i].y > canvas.height) {
+                    enemies.splice(i, 1);
+                }
+            }
+            enemyCountEl.innerText = enemies.length;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // O'yinchini chizish
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.size, player.size);
+
+            // Dushmanlarni chizish
+            for (let enemy of enemies) {
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
+            }
+
+            update();
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
 </body>
 </html>
