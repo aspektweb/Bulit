@@ -3,133 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kvadrat O'yini</title>
+    <title>4D Tesserakt Proyeksiyasi</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #222; font-family: sans-serif; }
-        canvas { display: block; background: #111; }
-        #ui {
-            position: absolute; top: 10px; left: 10px;
-            color: white; font-size: 18px; pointer-events: none;
-            line-height: 1.5;
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111; /* Qora fon */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #eee;
+            font-family: sans-serif;
+        }
+
+        #container {
+            width: 80vmin; /* Eng kichik o’lchamning 80% */
+            height: 80vmin;
+            position: relative;
+            perspective: 1000px; /* 3D effekt uchun chuqurlik */
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear;
+        }
+
+        /* Kub devorlarining umumiy stillari */
+        .face {
+            position: absolute;
+            border: 2px solid rgba(0, 255, 255, 0.7); /* Och ko'k rangli devorlar */
+            box-sizing: border-box;
+            background-color: rgba(0, 255, 255, 0.1); /* Shaffof ko'k fon */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+
+        /* 3D kub devorlarini joylashtirish */
+        .cube-1 .face, .cube-2 .face {
+            width: 50%; /* Ichki kub uchun 50% */
+            height: 50%;
+            left: 25%;
+            top: 25%;
+        }
+
+        /* Old, Back, Right, Left, Top, Bottom devorlarini joylashtirish */
+        .face.front  { transform: translateZ(25vmin); }
+        .face.back   { transform: rotateY(180deg) translateZ(25vmin); }
+        .face.right  { transform: rotateY(90deg) translateZ(25vmin); }
+        .face.left   { transform: rotateY(-90deg) translateZ(25vmin); }
+        .face.top    { transform: rotateX(90deg) translateZ(25vmin); }
+        .face.bottom { transform: rotateX(-90deg) translateZ(25vmin); }
+
+        /* Ikkinchi (katta) kubni o’lchamini va joylashuvini sozlash */
+        .cube-2 .face {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            border-color: rgba(255, 0, 255, 0.7); /* Pushti rangli devorlar */
+            background-color: rgba(255, 0, 255, 0.1);
+        }
+
+        /* Ikkinchi kub uchun devorlarni joylashtirish */
+        .cube-2 .face.front  { transform: translateZ(50vmin); }
+        .cube-2 .face.back   { transform: rotateY(180deg) translateZ(50vmin); }
+        .cube-2 .face.right  { transform: rotateY(90deg) translateZ(50vmin); }
+        .cube-2 .face.left   { transform: rotateY(-90deg) translateZ(50vmin); }
+        .cube-2 .face.top    { transform: rotateX(90deg) translateZ(50vmin); }
+        .cube-2 .face.bottom { transform: rotateX(-90deg) translateZ(50vmin); }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        Vaqt: <span id="time">0</span>s <br>
-        Dushmanlar soni: <span id="enemyCount">0</span> <br>
-        Tezlik: <span id="speed">2.0</span>
+    <div id="title">
+        <h1>4D Tesserakt</h1>
+        <p>Aylanayotgan 4D kubning 3D proyeksiyasi</p>
     </div>
 
-    <canvas id="gameCanvas"></canvas>
+    <div id="container">
+        <div class="cube cube-1">
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face right"></div>
+            <div class="face left"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+        </div>
+        <div class="cube cube-2">
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face right"></div>
+            <div class="face left"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+        </div>
+    </div>
 
     <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
+        const container = document.getElementById('container');
+        const cube1 = document.querySelector('.cube-1');
+        const cube2 = document.querySelector('.cube-2');
 
-        // UI elementlari
-        const timeEl = document.getElementById("time");
-        const enemyCountEl = document.getElementById("enemyCount");
-        const speedEl = document.getElementById("speed");
+        let angleX = 0;
+        let angleY = 0;
+        let angleZ = 0; // 3D aylanish
+        let angleW = 0; // 4D "aylanish" (proyeksiya o’zgarishi)
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function animate() {
+            // Aylanish burchaklarini yangilash
+            angleX += 0.01;
+            angleY += 0.015;
+            angleZ += 0.005;
+            angleW += 0.02; // 4D aylanishni simulyatsiya qilish
 
-        let score = 0;
-        let startTime = Date.now();
-        let gameOver = false;
+            // 3D aylanishni qo'llash (ikkala kub uchun)
+            cube1.style.transform = `rotateX(${angleX}rad) rotateY(${angleY}rad) rotateZ(${angleZ}rad)`;
+            cube2.style.transform = `rotateX(${angleX}rad) rotateY(${angleY}rad) rotateZ(${angleZ}rad)`;
 
-        // O'yinchi obyekti (Ko'k kvadrat)
-        const player = {
-            x: canvas.width / 2,
-            y: canvas.height - 50,
-            size: 20,
-            color: "#00ffff",
-            speed: 7
-        };
+            // "4D aylanish" ni simulyatsiya qilish uchun proyeksiyani o’zgartirish
+            // Bu erda biz ichki kubning o’lchamini va pozitsiyasini o’zgartiramiz,
+            // tashqi kubga nisbatan.
+            const wFactor = Math.sin(angleW) * 0.2 + 0.8; // 0.6 dan 1.0 gacha o'zgaradi
 
-        // Dushmanlar massivi
-        const enemies = [];
-        let enemyBaseSpeed = 2;
-
-        // Klaviatura boshqaruvi
-        const keys = {};
-        window.addEventListener("keydown", (e) => keys[e.code] = true);
-        window.addEventListener("keyup", (e) => keys[e.code] = false);
-
-        function createEnemy() {
-            const size = 20;
-            enemies.push({
-                x: Math.random() * (canvas.width - size),
-                y: -size,
-                size: size,
-                speed: enemyBaseSpeed + Math.random() * 2,
-                color: "#ff3333"
+            // Ichki kubning o'lchamini va devorlarini 4D aylanishga qarab o'zgartirish
+            const innerFaces = cube1.querySelectorAll('.face');
+            innerFaces.forEach(face => {
+                const currentTransform = window.getComputedStyle(face).transform;
+                // Bu oddiy simulyatsiya: devorlarning shaffofligini o'zgartirish
+                face.style.opacity = Math.cos(angleW) * 0.4 + 0.6; 
             });
+
+             // Tashqi kubning devorlarini ham biroz o'zgartirish
+            const outerFaces = cube2.querySelectorAll('.face');
+            outerFaces.forEach(face => {
+                 face.style.opacity = Math.sin(angleW) * 0.4 + 0.6;
+            });
+
+
+            requestAnimationFrame(animate);
         }
 
-        function update() {
-            if (gameOver) return;
-
-            // Vaqtni hisoblash
-            let elapsed = Math.floor((Date.now() - startTime) / 1000);
-            timeEl.innerText = elapsed;
-            
-            // Dushmanlar tezligini vaqt o'tishi bilan oshirish
-            enemyBaseSpeed = 2 + (elapsed / 10);
-            speedEl.innerText = enemyBaseSpeed.toFixed(1);
-
-            // O'yinchi harakati
-            if (keys["ArrowLeft"] && player.x > 0) player.x -= player.speed;
-            if (keys["ArrowRight"] && player.x < canvas.width - player.size) player.x += player.speed;
-            if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
-            if (keys["ArrowDown"] && player.y < canvas.height - player.size) player.y += player.size;
-
-            // Dushmanlarni yangilash
-            if (Math.random() < 0.05) createEnemy();
-
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                enemies[i].y += enemies[i].speed;
-
-                // To'qnashuvni tekshirish
-                if (
-                    player.x < enemies[i].x + enemies[i].size &&
-                    player.x + player.size > enemies[i].x &&
-                    player.y < enemies[i].y + enemies[i].size &&
-                    player.y + player.size > enemies[i].y
-                ) {
-                    gameOver = true;
-                    alert("O'yin tugadi! Siz " + elapsed + " soniya chidadingiz.");
-                    location.reload();
-                }
-
-                // Ekranda chiqib ketgan dushmanlarni o'chirish
-                if (enemies[i].y > canvas.height) {
-                    enemies.splice(i, 1);
-                }
-            }
-            enemyCountEl.innerText = enemies.length;
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // O'yinchini chizish
-            ctx.fillStyle = player.color;
-            ctx.fillRect(player.x, player.y, player.size, player.size);
-
-            // Dushmanlarni chizish
-            for (let enemy of enemies) {
-                ctx.fillStyle = enemy.color;
-                ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
-            }
-
-            update();
-            requestAnimationFrame(draw);
-        }
-
-        draw();
+        animate();
     </script>
 </body>
 </html>
